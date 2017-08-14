@@ -1,9 +1,14 @@
-//
-//  HelperMethods.swift
-//  Social Bubble
-//
-//  Created by Eisdorfer, Lauren on 8/14/17.
-//  Copyright © 2017 Eisdorfer, Lauren. All rights reserved.
-//
+import UIKit
 
-import Foundation
+extension CGRect {
+    public init(x: CGFloat, y: CGFloat, size: CGSize) {
+        self.init(x: x, y: y, width: size.width, height: size.height)
+    }
+}
+
+struct Padding {
+    static let tiny: CGFloat = 4
+    static let small: CGFloat = 8
+    static let large: CGFloat = 16
+}
+

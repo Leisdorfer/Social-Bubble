@@ -14,6 +14,7 @@
 		17ECDAB61F41DB1500580940 /* Social_BubbleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAB51F41DB1500580940 /* Social_BubbleTests.swift */; };
 		17ECDAC11F41DB1500580940 /* Social_BubbleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAC01F41DB1500580940 /* Social_BubbleUITests.swift */; };
 		17ECDACF1F41DD2200580940 /* SocialBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */; };
+		17ECDAD61F41E1E300580940 /* HelperMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAD51F41E1E300580940 /* HelperMethods.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		17ECDAC01F41DB1500580940 /* Social_BubbleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social_BubbleUITests.swift; sourceTree = "<group>"; };
 		17ECDAC21F41DB1500580940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialBubbleView.swift; sourceTree = "<group>"; };
+		17ECDAD51F41E1E300580940 /* HelperMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMethods.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				17ECDAA91F41DB1500580940 /* LaunchScreen.storyboard */,
 				17ECDAAC1F41DB1500580940 /* Info.plist */,
 				17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */,
+				17ECDAD51F41E1E300580940 /* HelperMethods.swift */,
 			);
 			path = "Social Bubble";
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			files = (
 				17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */,
 				17ECDAA11F41DB1500580940 /* AppDelegate.swift in Sources */,
+				17ECDAD61F41E1E300580940 /* HelperMethods.swift in Sources */,
 				17ECDACF1F41DD2200580940 /* SocialBubbleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,6 +340,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HV2ZKQRMWU;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -393,6 +398,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HV2ZKQRMWU;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
