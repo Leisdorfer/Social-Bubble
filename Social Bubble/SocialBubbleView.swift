@@ -1,19 +1,26 @@
 import UIKit
 import FacebookLogin
 import FacebookCore
-import FacebookShare
 
-class SocialBubbleView: UIView {
+class SocialBubbleView: UIView, LoginButtonDelegate  {
+
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
-    fileprivate var visibleBubbles = [UIButton]()
+    private var visibleBubbles = [UIButton]()
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        if (AccessToken.current != nil) {
+            print("----------------------------->User logged in...")
+        } else {
+            print("----------------------------->User not logged in...")
+        }
         backgroundColor = .black
         addShadow(toView: title, withRadius: 4)
         title.textColor = .white
         title.text = "Social Bubble"
         title.font = UIFont.systemFont(ofSize: 54)
+        login.delegate = self
         addSubview(login)
     }
     
@@ -33,7 +40,25 @@ class SocialBubbleView: UIView {
         //addAnimation(toBubbles: visibleBubbles)
     }
     
-    fileprivate func addRandomBubbles() {
+    /**
+     Called when the button was used to login and the process finished.
+     
+     - parameter loginButton: Button that was used to login.
+     - parameter result:      The result of the login.
+     */
+    public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        switch result {
+        case .failed(let error): print(error)
+        case .cancelled: print("user cancelled login")
+        case .success(let grantedPermissions, let declinedPermissions, let accessToken): print("logged in!")
+        }
+    }
+    
+    public func loginButtonDidLogOut(_ loginButton: LoginButton) {
+        print("user logged out!")
+    }
+    
+    private func addRandomBubbles() {
         (0...15).forEach { _ in
             let diameter = CGFloat(arc4random_uniform(100) + 50)
             let x = CGFloat(arc4random_uniform(UInt32(bounds.maxX)))
@@ -48,13 +73,13 @@ class SocialBubbleView: UIView {
         }
     }
     
-    fileprivate func addStyle(toBubble bubble: UIButton, withDiameter diameter: CGFloat) {
+    private func addStyle(toBubble bubble: UIButton, withDiameter diameter: CGFloat) {
         bubble.backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         addShadow(toView: bubble, withRadius: 10)
         bubble.layer.cornerRadius = diameter/2
     }
     
-    fileprivate func addAnimation(toBubbles bubbles: [UIButton]) {
+    private func addAnimation(toBubbles bubbles: [UIButton]) {
         UIView.animate(withDuration: 10, animations: {
             bubbles.forEach { [weak self] bubble in
                 guard let `self` = self else { return }
@@ -70,7 +95,7 @@ class SocialBubbleView: UIView {
         })
     }
     
-    fileprivate func addShadow(toView view: UIView, withRadius radius: CGFloat) {
+    private func addShadow(toView view: UIView, withRadius radius: CGFloat) {
         view.layer.shadowColor = UIColor.white.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.layer.shadowOpacity = 0.75

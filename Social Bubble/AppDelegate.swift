@@ -10,7 +10,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = ViewController()
-        // Override point for customization after application launch.
         return true
     }
 }
