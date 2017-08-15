@@ -1,2 +1,5 @@
+github "ReactiveX/RxSwift"
+github "RxSugar/RxSugar" "master"
 github "facebook/facebook-sdk-swift"
+
 

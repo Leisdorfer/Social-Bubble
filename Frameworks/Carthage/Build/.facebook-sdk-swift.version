@@ -2,15 +2,15 @@
   "commitish" : "0.2.0",
   "iOS" : [
     {
-      "hash" : "92785573ffb4a4bb92a5e04de5c700d73f3720624579129c0e2e1eefbd247d0d",
+      "hash" : "423073f0824cdf3c4b4aad734f52069214baabd91e55d1fec136631a57755f39",
       "name" : "FacebookLogin"
     },
     {
-      "hash" : "5abbde13c7806964702fc239ec48815885314cd682459ada64f808d263e29abf",
+      "hash" : "ef684121e2e951a3ad82277fcd5b72c734fc8f7563cd96df0629bfc0274dcdef",
       "name" : "FacebookCore"
     },
     {
-      "hash" : "3493ada32586f5db04df4efb43c68c421ccbe8c72341665f82edae293252917f",
+      "hash" : "630327d661063e78975eca6fb79794c36ec58c8a8f2e625266d14c3b513a7a49",
       "name" : "FacebookShare"
     }
   ]

@@ -1,13 +1,20 @@
 import UIKit
 import FacebookLogin
 import FacebookCore
+import RxSugar
+import RxSwift
 
 class SocialBubbleView: UIView, LoginButtonDelegate  {
 
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
     private var visibleBubbles = [UIButton]()
+    
+    let loggedIn: Observable<Void>
+    private let _loggedIn = PublishSubject<Void>()
+    
     override init(frame: CGRect) {
+        loggedIn = _loggedIn.asObservable()
         super.init(frame: frame)
         backgroundColor = .black
         addShadow(toView: title, withRadius: 4)
@@ -39,6 +46,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
         case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+            _loggedIn.onNext()
             print("logged in!")
         }
     }
