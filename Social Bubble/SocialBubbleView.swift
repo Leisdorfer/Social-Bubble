@@ -9,12 +9,6 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
     private var visibleBubbles = [UIButton]()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        if (AccessToken.current != nil) {
-            print("----------------------------->User logged in...")
-        } else {
-            print("----------------------------->User not logged in...")
-        }
         backgroundColor = .black
         addShadow(toView: title, withRadius: 4)
         title.textColor = .white
@@ -39,18 +33,13 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         addRandomBubbles()
         //addAnimation(toBubbles: visibleBubbles)
     }
-    
-    /**
-     Called when the button was used to login and the process finished.
-     
-     - parameter loginButton: Button that was used to login.
-     - parameter result:      The result of the login.
-     */
+   
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         switch result {
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
-        case .success(let grantedPermissions, let declinedPermissions, let accessToken): print("logged in!")
+        case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+            print("logged in!")
         }
     }
     
