@@ -39,5 +39,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb879481602213961</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>879481602213961</string>
+    <key>FacebookDisplayName</key>
+    <string>Lauren Eisdorfer</string>
 </dict>
 </plist>
