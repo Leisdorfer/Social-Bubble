@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		171FF2211F43858F00926487 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1790935A1F43831900F6161F /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2231F43859300926487 /* RxSugar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093581F43830E00F6161F /* RxSugar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FF2241F43869200926487 /* SocialBubbleModel.swift */; };
 		173D4B9D1F435A770011F743 /* FBSDKLoginKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 175796721F434535000CAE6B /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		173D4BA01F435A7B0011F743 /* FBSDKCoreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 175796711F434529000CAE6B /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		173D4BA41F435A810011F743 /* FacebookLogin.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1705712A1F4344CE0000324A /* FacebookLogin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		170571291F4344C00000324A /* FacebookCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookCore.framework; path = Carthage/Build/iOS/FacebookCore.framework; sourceTree = "<group>"; };
 		1705712A1F4344CE0000324A /* FacebookLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookLogin.framework; path = Carthage/Build/iOS/FacebookLogin.framework; sourceTree = "<group>"; };
+		171FF2241F43869200926487 /* SocialBubbleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialBubbleModel.swift; sourceTree = "<group>"; };
 		173D4BA91F4363970011F743 /* FacebookShare.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookShare.framework; path = Carthage/Build/iOS/FacebookShare.framework; sourceTree = "<group>"; };
 		175796701F43451A000CAE6B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Carthage/Build/iOS/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		175796711F434529000CAE6B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Carthage/Build/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */,
 				17ECDAD51F41E1E300580940 /* HelperMethods.swift */,
 				177722101F42300F000164A4 /* ServiceLayer.swift */,
+				171FF2241F43869200926487 /* SocialBubbleModel.swift */,
 			);
 			path = "Social Bubble";
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */,
 				177722111F42300F000164A4 /* ServiceLayer.swift in Sources */,
 				17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */,
 				17ECDAA11F41DB1500580940 /* AppDelegate.swift in Sources */,
@@ -410,7 +414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -464,7 +468,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -482,7 +486,7 @@
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-Bubble";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,7 +504,7 @@
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-Bubble";
 				PRODUCT_NAME = "$(TARGET_NAME)";

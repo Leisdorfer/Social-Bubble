@@ -28,7 +28,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         defer { addSubview(title) }
@@ -45,7 +45,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         switch result {
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
-        case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+        case .success(_, _, _):
             _loggedIn.onNext()
             print("logged in!")
         }
@@ -55,7 +55,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         print("user logged out!")
     }
     
-    private func addRandomBubbles() {
+    func addRandomBubbles(withEvents events: [Event]? = nil) {
         (0...15).forEach { _ in
             let diameter = CGFloat(arc4random_uniform(100) + 50)
             let x = CGFloat(arc4random_uniform(UInt32(bounds.maxX)))
@@ -68,6 +68,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
                 visibleBubbles.append(bubble)
             }
         }
+        guard let visibleEvents = events else { return }
+        _ = zip(visibleBubbles, visibleEvents).map { $0.0.setTitle($0.1.name, for: .normal); $0.0.titleLabel?.adjustsFontSizeToFitWidth = true; $0.0.titleLabel?.numberOfLines = 3; $0.0.titleLabel?.textAlignment = .center; $0.0.titleLabel?.textColor = .black }
     }
     
     private func addStyle(toBubble bubble: UIButton, withDiameter diameter: CGFloat) {

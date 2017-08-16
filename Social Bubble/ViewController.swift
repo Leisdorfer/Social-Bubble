@@ -3,9 +3,10 @@ import RxSugar
 import RxSwift
 
 struct Binding {
-    static func bind(view: SocialBubbleView, model: ServiceLayer) {
+    static func bind(view: SocialBubbleView, model: SocialBubbleModel) {
         view.rxs.disposeBag
             ++ { model.fetchEvents() } <~ view.loggedIn
+            ++ { view.addRandomBubbles(withEvents: $0) } <~ model.events
     }
 }
 
@@ -14,8 +15,8 @@ class ViewController: UIViewController {
     override func loadView() {
         let socialBubbleView = SocialBubbleView()
         view = socialBubbleView
-        let serviceLayer = ServiceLayer()
-        Binding.bind(view: socialBubbleView, model: serviceLayer)
+        let model = SocialBubbleModel()
+        Binding.bind(view: socialBubbleView, model: model)
         
     }
     
