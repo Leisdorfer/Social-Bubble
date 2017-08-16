@@ -8,12 +8,16 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
 
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
-    private var visibleBubbles = [UIButton]()
+    private var bubbles: [UIButton] = []
+    private var visibleBubbles: [UIButton] = []
+
+    //let selection: Observable<Void>
     
     let loggedIn: Observable<Void>
     private let _loggedIn = PublishSubject<Void>()
     
     override init(frame: CGRect) {
+       // selection = Observable.of(visibleBubbles.map { $0.rxs.tap })
         loggedIn = _loggedIn.asObservable()
         super.init(frame: frame)
         backgroundColor = .black
@@ -23,6 +27,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         title.font = UIFont.systemFont(ofSize: 54)
         login.delegate = self
         addSubview(login)
+        addBubbles()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,17 +42,19 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         title.frame = CGRect(x: contentArea.midX - titleSize.width/2, y: contentArea.minY, size: titleSize)
         let loginSize = CGSize(width: 88, height: 44)
         login.frame = CGRect(x: contentArea.midX - loginSize.width/2, y: title.frame.maxY, size: loginSize)
-        addRandomBubbles()
+        layoutBubbles()
         //addAnimation(toBubbles: visibleBubbles)
+    }
+    
+    @objc private func addContentToBubble() {
+        print("why hello there!")
     }
    
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         switch result {
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
-        case .success(_, _, _):
-            _loggedIn.onNext()
-            print("logged in!")
+        case .success(_, _, _):_loggedIn.onNext()
         }
     }
     
@@ -55,23 +62,38 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         print("user logged out!")
     }
     
-    func addRandomBubbles(withEvents events: [Event]? = nil) {
-        (0...15).forEach { _ in
+    func addBubbles() {
+        (0...30).forEach { _ in
+            let bubble = UIButton()
+            addSubview(bubble)
+            bubbles.append(bubble)
+        }
+    }
+    
+    func layoutBubbles() {
+        defer { visibleBubbles = [] }
+        bubbles.forEach { bubble in
             let diameter = CGFloat(arc4random_uniform(100) + 50)
             let x = CGFloat(arc4random_uniform(UInt32(bounds.maxX)))
             let y = CGFloat(arc4random_uniform(UInt32(bounds.maxY)) + UInt32(login.frame.maxY))
-            let bubble = UIButton(frame: CGRect(x: x - diameter, y: y, width: diameter, height: diameter))
+            bubble.frame = CGRect(x: x - diameter/2, y: y, width: diameter, height: diameter)
             let intersect = visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
-            if !intersect {
+
+            if intersect {
+               bubble.frame = CGRect.zero
+            } else {
                 addStyle(toBubble: bubble, withDiameter: diameter)
-                addSubview(bubble)
                 visibleBubbles.append(bubble)
             }
         }
-        guard let visibleEvents = events else { return }
-        _ = zip(visibleBubbles, visibleEvents).map { $0.0.setTitle($0.1.name, for: .normal); $0.0.titleLabel?.adjustsFontSizeToFitWidth = true; $0.0.titleLabel?.numberOfLines = 3; $0.0.titleLabel?.textAlignment = .center; $0.0.titleLabel?.textColor = .black }
     }
     
+    func addEvents(_ events: [Event]) {
+        let bubbleEvents = zip(bubbles, events)
+//get rid of bubbles without events
+        _ = zip(bubbles, events).map { $0.0.setTitle($0.1.name, for: .normal); $0.0.titleLabel?.adjustsFontSizeToFitWidth = true; $0.0.titleLabel?.numberOfLines = 3; $0.0.titleLabel?.textAlignment = .center; $0.0.titleLabel?.textColor = .black; $0.0.addTarget(self, action: #selector(addContentToBubble), for: .touchUpInside) }
+    }
+
     private func addStyle(toBubble bubble: UIButton, withDiameter diameter: CGFloat) {
         bubble.backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         addShadow(toView: bubble, withRadius: 10)

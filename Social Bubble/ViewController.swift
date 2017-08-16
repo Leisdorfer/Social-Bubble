@@ -6,7 +6,7 @@ struct Binding {
     static func bind(view: SocialBubbleView, model: SocialBubbleModel) {
         view.rxs.disposeBag
             ++ { model.fetchEvents() } <~ view.loggedIn
-            ++ { view.addRandomBubbles(withEvents: $0) } <~ model.events
+            ++ { view.addEvents($0) } <~ model.events
     }
 }
 
