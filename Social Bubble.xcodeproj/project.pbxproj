@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		167F50E11F45295E0032EFF2 /* SocialEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F50E01F45295E0032EFF2 /* SocialEventView.swift */; };
 		171FF2211F43858F00926487 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1790935A1F43831900F6161F /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2231F43859300926487 /* RxSugar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093581F43830E00F6161F /* RxSugar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FF2241F43869200926487 /* SocialBubbleModel.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		167F50E01F45295E0032EFF2 /* SocialEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialEventView.swift; sourceTree = "<group>"; };
 		170571291F4344C00000324A /* FacebookCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookCore.framework; path = Carthage/Build/iOS/FacebookCore.framework; sourceTree = "<group>"; };
 		1705712A1F4344CE0000324A /* FacebookLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookLogin.framework; path = Carthage/Build/iOS/FacebookLogin.framework; sourceTree = "<group>"; };
 		171FF2241F43869200926487 /* SocialBubbleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialBubbleModel.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				17ECDAD51F41E1E300580940 /* HelperMethods.swift */,
 				177722101F42300F000164A4 /* ServiceLayer.swift */,
 				171FF2241F43869200926487 /* SocialBubbleModel.swift */,
+				167F50E01F45295E0032EFF2 /* SocialEventView.swift */,
 			);
 			path = "Social Bubble";
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				167F50E11F45295E0032EFF2 /* SocialEventView.swift in Sources */,
 				171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */,
 				177722111F42300F000164A4 /* ServiceLayer.swift in Sources */,
 				17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */,

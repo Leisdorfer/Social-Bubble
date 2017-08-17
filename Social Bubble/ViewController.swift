@@ -3,10 +3,11 @@ import RxSugar
 import RxSwift
 
 struct Binding {
-    static func bind(view: SocialBubbleView, model: SocialBubbleModel) {
+    static func bind(view: SocialBubbleView, model: SocialBubbleModel, controller: ViewController) {
         view.rxs.disposeBag
-            ++ { model.fetchEvents() } <~ view.loggedIn
+            ++ { model.fetchEvents() } <~ view.loggedIn.filter { $0 == true }.toVoid()
             ++ { view.addEvents($0) } <~ model.events
+            ++ { controller.presentEvent() } <~ view.selection
     }
 }
 
@@ -16,12 +17,16 @@ class ViewController: UIViewController {
         let socialBubbleView = SocialBubbleView()
         view = socialBubbleView
         let model = SocialBubbleModel()
-        Binding.bind(view: socialBubbleView, model: model)
-        
+        Binding.bind(view: socialBubbleView, model: model, controller: self)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func presentEvent() {
+        let socialEventView = SocialEventView()
+        view = socialEventView
     }
 }
 
