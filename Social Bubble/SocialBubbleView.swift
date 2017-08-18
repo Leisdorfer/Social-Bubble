@@ -4,23 +4,19 @@ import FacebookCore
 import RxSugar
 import RxSwift
 
-class SocialBubbleView: UIView, LoginButtonDelegate  {
+class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate  {
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
-    private var bubbles: [UIButton] = []
-    private var visibleBubbles: [UIButton] = []
+    private var bubbles: [BubbleView] = []
+    private var visibleBubbles: [BubbleView] = []
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
-    let selection: Observable<Void>
-    private let _selection = PublishSubject<Void>()
-    
+
     override init(frame: CGRect) {
         loggedIn = _loggedIn.asObservable()
-        selection = _selection.asObservable()
         super.init(frame: frame)
         backgroundColor = .black
-        addShadow(toView: title, withRadius: 4)
         title.textColor = .white
         title.text = "Social Bubble"
         title.font = UIFont.systemFont(ofSize: 54)
@@ -43,65 +39,54 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
         login.frame = CGRect(x: contentArea.midX - loginSize.width/2, y: title.frame.maxY, size: loginSize)
         layoutBubbles()
     }
-    
-    @objc private func addContent(_ bubble: UIButton) {
-        let animation = Animation(bounds: bounds)
-        animation.animateBubble(bubble, amongstBubbles: bubbles)
-       // _selection.onNext()
-        print("why hello there!")
-    }
 
     private func addBubbles() {
         (0...30).forEach { _ in
-            let bubble = UIButton()
+            let bubble = BubbleView()
+            let tap = UITapGestureRecognizer(target: self, action: #selector(viewSelection(_:)))
+            tap.delegate = self
+            addGestureRecognizer(tap)
             addSubview(bubble)
             bubbles.append(bubble)
         }
     }
     
+    @objc private func viewSelection(_ recognizer: UITapGestureRecognizer) {
+        let pressedPoint = recognizer.location(in: self)
+        let pressedBubble = bubbles.filter { $0.frame.contains(pressedPoint) }.first
+        guard let bubble = pressedBubble else { return }
+        let animation = Animation(bounds: bounds)
+        animation.animateView(bubble, withinViews: bubbles)
+        bubble.updateEvent()
+    }
+    
     private func layoutBubbles() {
-        defer { visibleBubbles = [] }
 //TODO: replace the access token check with an Rx substitute
-        _loggedIn.value = AccessToken.current != nil
-        bubbles.forEach { bubble in
+        defer { visibleBubbles = []; _loggedIn.value = AccessToken.current != nil }
+        bubbles.forEach { [weak self] bubble in
+            guard let `self` = self else { return }
             let diameter = CGFloat(arc4random_uniform(100) + 50)
-            let x = CGFloat(arc4random_uniform(UInt32(bounds.maxX)))
-            let y = CGFloat(arc4random_uniform(UInt32(bounds.maxY)) + UInt32(login.frame.maxY))
-            bubble.frame = CGRect(x: x - diameter/2, y: y, width: diameter, height: diameter)
-            let intersect = visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
-
-            if intersect {
-               bubble.frame = CGRect.zero
+            var x = CGFloat(arc4random_uniform(UInt32(self.bounds.maxX)))
+            var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY))
+            x = (x + diameter) > self.bounds.maxX || x == self.bounds.maxX ? x - diameter : x
+            y = (y + diameter) > self.bounds.maxY ? y - diameter : y
+            bubble.frame = CGRect(x: x, y: y, width: diameter, height: diameter)
+            let intersect = self.visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
+            let visible = bubble.frame.intersects(self.bounds)
+            if !intersect && visible {
+                self.visibleBubbles.append(bubble)
             } else {
-                addStyle(toBubble: bubble)
-                visibleBubbles.append(bubble)
+                bubble.frame = CGRect.zero
             }
         }
+        print("hello")
     }
     
     func addEvents(_ events: [Event]) {
-        let bubbleEvents = zip(visibleBubbles, events)
 //TODO: get rid of bubbles without events
-        _ = zip(bubbles, events).map { $0.0.setTitle($0.1.name, for: .normal); $0.0.addTarget(self, action: #selector(addContent(_:)), for: .touchUpInside) }
+        _ = zip(bubbles, events).map { $0.event = $1 }
     }
 
-    private func addStyle(toBubble bubble: UIButton) {
-        bubble.backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-        bubble.titleLabel?.numberOfLines = 3
-        bubble.titleLabel?.textAlignment = .center
-        bubble.titleLabel?.adjustsFontSizeToFitWidth = true
-        bubble.titleLabel?.textColor = .white
-        bubble.layer.cornerRadius = bubble.frame.width/2//diameter/2
-        addShadow(toView: bubble, withRadius: 10)
-    }
-
-    
-    private func addShadow(toView view: UIView, withRadius radius: CGFloat) {
-        view.layer.shadowColor = UIColor.white.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 0)
-        view.layer.shadowOpacity = 0.75
-        view.layer.shadowRadius = radius
-    }
     
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         switch result {
@@ -113,41 +98,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate  {
     
     public func loginButtonDidLogOut(_ loginButton: LoginButton) {
         print("user logged out!")
+        _ = bubbles.map { $0.event = nil }
     }
 }
 
-struct Animation {
-    private let bounds: CGRect
-    
-    init(bounds: CGRect) {
-        self.bounds = bounds
-    }
-    
-    func animateBubble(_ bubble: UIButton, amongstBubbles bubbles: [UIButton]) {
-        let duration: TimeInterval = 3
-        UIView.animate(withDuration: duration, animations: {
-            let diameter: CGFloat = self.bounds.width - (Padding.large * 2)
-            bubble.frame.origin.y = self.bounds.midY - diameter/2
-            bubble.frame.origin.x = self.bounds.midX - diameter/2
-            bubble.frame.size.height = diameter
-            bubble.frame.size.width = diameter
-            self.animateCornerRadius(ofBubble: bubble, toRadius: bubble.frame.width/2, forDuration: duration)
-            self.animateBubble(bubble, toFrontOf: bubbles)
-            }, completion: nil)
-    }
-    
-    private func animateBubble(_ bubble: UIButton, toFrontOf bubbles: [UIButton]) {
-        let maxZPosition = bubbles.reduce(0) { $0 + $1.layer.zPosition }
-        bubble.layer.zPosition = maxZPosition + 1
-    }
-    
-    private func animateCornerRadius (ofBubble bubble: UIButton, toRadius radius: CGFloat, forDuration duration: TimeInterval) {
-        let animation = CABasicAnimation(keyPath:"cornerRadius")
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animation.fromValue = bubble.layer.cornerRadius
-        animation.toValue =  radius
-        animation.duration = duration
-        bubble.layer.cornerRadius = radius
-        bubble.layer.add(animation, forKey:"cornerRadius")
-    }
-}
+

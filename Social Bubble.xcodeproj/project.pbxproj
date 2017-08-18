@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		167F50E11F45295E0032EFF2 /* SocialEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F50E01F45295E0032EFF2 /* SocialEventView.swift */; };
+		167F50E11F45295E0032EFF2 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F50E01F45295E0032EFF2 /* BubbleView.swift */; };
 		171FF2211F43858F00926487 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1790935A1F43831900F6161F /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2231F43859300926487 /* RxSugar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093581F43830E00F6161F /* RxSugar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FF2241F43869200926487 /* SocialBubbleModel.swift */; };
@@ -20,6 +20,7 @@
 		177722111F42300F000164A4 /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177722101F42300F000164A4 /* ServiceLayer.swift */; };
 		1777221D1F433442000164A4 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1777221C1F433442000164A4 /* Cartfile */; };
 		179093571F43646100F6161F /* Bolts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093541F43645500F6161F /* Bolts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		17D2CFA21F461A5A00FFC7D8 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D2CFA11F461A5A00FFC7D8 /* Animation.swift */; };
 		17ECDAA11F41DB1500580940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAA01F41DB1500580940 /* AppDelegate.swift */; };
 		17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAA21F41DB1500580940 /* ViewController.swift */; };
 		17ECDAA81F41DB1500580940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17ECDAA71F41DB1500580940 /* Assets.xcassets */; };
@@ -69,7 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		167F50E01F45295E0032EFF2 /* SocialEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialEventView.swift; sourceTree = "<group>"; };
+		167F50E01F45295E0032EFF2 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		170571291F4344C00000324A /* FacebookCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookCore.framework; path = Carthage/Build/iOS/FacebookCore.framework; sourceTree = "<group>"; };
 		1705712A1F4344CE0000324A /* FacebookLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookLogin.framework; path = Carthage/Build/iOS/FacebookLogin.framework; sourceTree = "<group>"; };
 		171FF2241F43869200926487 /* SocialBubbleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialBubbleModel.swift; sourceTree = "<group>"; };
@@ -82,6 +83,7 @@
 		179093541F43645500F6161F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Carthage/Build/iOS/Bolts.framework; sourceTree = "<group>"; };
 		179093581F43830E00F6161F /* RxSugar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSugar.framework; path = Carthage/Build/iOS/RxSugar.framework; sourceTree = "<group>"; };
 		1790935A1F43831900F6161F /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		17D2CFA11F461A5A00FFC7D8 /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		17ECDA9D1F41DB1500580940 /* Social Bubble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Bubble.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17ECDAA01F41DB1500580940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17ECDAA21F41DB1500580940 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -171,7 +173,8 @@
 				17ECDAD51F41E1E300580940 /* HelperMethods.swift */,
 				177722101F42300F000164A4 /* ServiceLayer.swift */,
 				171FF2241F43869200926487 /* SocialBubbleModel.swift */,
-				167F50E01F45295E0032EFF2 /* SocialEventView.swift */,
+				167F50E01F45295E0032EFF2 /* BubbleView.swift */,
+				17D2CFA11F461A5A00FFC7D8 /* Animation.swift */,
 			);
 			path = "Social Bubble";
 			sourceTree = "<group>";
@@ -326,8 +329,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				167F50E11F45295E0032EFF2 /* SocialEventView.swift in Sources */,
+				167F50E11F45295E0032EFF2 /* BubbleView.swift in Sources */,
 				171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */,
+				17D2CFA21F461A5A00FFC7D8 /* Animation.swift in Sources */,
 				177722111F42300F000164A4 /* ServiceLayer.swift in Sources */,
 				17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */,
 				17ECDAA11F41DB1500580940 /* AppDelegate.swift in Sources */,

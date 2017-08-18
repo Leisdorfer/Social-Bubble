@@ -5,9 +5,8 @@ import RxSwift
 struct Binding {
     static func bind(view: SocialBubbleView, model: SocialBubbleModel, controller: ViewController) {
         view.rxs.disposeBag
-            ++ { model.fetchEvents() } <~ view.loggedIn.filter { $0 == true }.toVoid()
+            ++ { model.fetchEvents() } <~ view.loggedIn.filter { $0 }.toVoid()
             ++ { view.addEvents($0) } <~ model.events
-            ++ { controller.presentEvent() } <~ view.selection
     }
 }
 
@@ -22,11 +21,6 @@ class ViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    func presentEvent() {
-        let socialEventView = SocialEventView()
-        view = socialEventView
     }
 }
 

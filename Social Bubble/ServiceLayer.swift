@@ -19,13 +19,12 @@ struct Event {
 }
 
 struct ServiceLayer {
-    
     var events: Observable<[Event]> { return _events.asObservable() }
     private let _events = PublishSubject<[Event]>()
 
     func fetchEvents() {
         let connection = GraphRequestConnection()
-        connection.add(GraphRequest(graphPath: "/search?q=St.Louis,STL&type=event")) { response, result in
+        connection.add(GraphRequest(graphPath: "/search?q=NewYork&type=event")) { response, result in
             switch result {
             case .success(let response):
                 guard let _json = response.dictionaryValue, let json = _json["data"] as? [[String: Any]] else { return }
