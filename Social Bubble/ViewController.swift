@@ -45,9 +45,11 @@ class ViewController: UIViewController {
         if UIApplication.shared.canOpenURL(waze) {
             enabledDirectionsApps["Waze"] = wazeURL
         }
-        
+ 
         if enabledDirectionsApps.values.count > 1 {
             let actionSheet = UIAlertController(title: "Select Navigation App", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            actionSheet.addAction(cancel)
             
             for (title, url) in enabledDirectionsApps {
                 actionSheet.addAction(
