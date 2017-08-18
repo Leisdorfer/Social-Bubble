@@ -7,7 +7,7 @@ struct Binding {
         view.rxs.disposeBag
             ++ { model.fetchEvents() } <~ view.loggedIn.filter { $0 }.toVoid()
             ++ { view.addEvents($0) } <~ model.events
-            ++ { controller.printStuff() } <~ view.directionSelection.asObservable()
+            ++ { controller.printStuff() } <~ view.selectDirection.asObservable()
     }
 }
 

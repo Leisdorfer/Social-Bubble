@@ -14,7 +14,7 @@ class BubbleView: UIButton {
         setNeedsLayout()
     }
     
-    let selection: Observable<Void>
+    let selectDirection: Observable<Void>
     
     var event: Event? {
         didSet {
@@ -28,7 +28,7 @@ class BubbleView: UIButton {
     }
     
     override init(frame: CGRect) {
-        selection = directions.rxs.tap
+        selectDirection = directions.rxs.tap
         super.init(frame: frame)
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         addShadow(withRadius: 8)

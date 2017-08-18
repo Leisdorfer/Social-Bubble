@@ -12,7 +12,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
-    let directionSelection = PublishSubject<Void>()
+    let selectDirection = PublishSubject<Void>()
 
     override init(frame: CGRect) {
         loggedIn = _loggedIn.asObservable()
@@ -44,17 +44,16 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
     private func addBubbles() {
         (0...30).forEach { _ in
             let bubble = BubbleView()
-           bubble.addTarget(self, action: #selector(viewSelection(_:)), for: .touchUpInside)
-            
             addSubview(bubble)
             bubbles.append(bubble)
             
             rxs.disposeBag
-                ++ directionSelection.asObserver() <~ bubble.selection
+                ++ { [weak self] in self?.viewSelection(bubble) } <~ bubble.rxs.tap
+                ++ selectDirection.asObserver() <~ bubble.selectDirection
         }
     }
     
-    @objc private func viewSelection(_ bubble: BubbleView) {
+   private func viewSelection(_ bubble: BubbleView) {
         let animation = Animation(bounds: bounds)
         animation.animateView(bubble, withinViews: bubbles)
         bubble.updateEvent()
