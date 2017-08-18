@@ -4,7 +4,7 @@ import FacebookCore
 import RxSugar
 import RxSwift
 
-class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate  {
+class SocialBubbleView: UIView, LoginButtonDelegate {
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
     private var bubbles: [BubbleView] = []
@@ -12,6 +12,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
+    let directionSelection = PublishSubject<Void>()
 
     override init(frame: CGRect) {
         loggedIn = _loggedIn.asObservable()
@@ -25,7 +26,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addSubview(login)
         addBubbles()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -43,18 +44,17 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private func addBubbles() {
         (0...30).forEach { _ in
             let bubble = BubbleView()
-            let tap = UITapGestureRecognizer(target: self, action: #selector(viewSelection(_:)))
-            tap.delegate = self
-            addGestureRecognizer(tap)
+           bubble.addTarget(self, action: #selector(viewSelection(_:)), for: .touchUpInside)
+            
             addSubview(bubble)
             bubbles.append(bubble)
+            
+            rxs.disposeBag
+                ++ directionSelection.asObserver() <~ bubble.selection
         }
     }
     
-    @objc private func viewSelection(_ recognizer: UITapGestureRecognizer) {
-        let pressedPoint = recognizer.location(in: self)
-        let pressedBubble = bubbles.filter { $0.frame.contains(pressedPoint) }.first
-        guard let bubble = pressedBubble else { return }
+    @objc private func viewSelection(_ bubble: BubbleView) {
         let animation = Animation(bounds: bounds)
         animation.animateView(bubble, withinViews: bubbles)
         bubble.updateEvent()
@@ -79,7 +79,6 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
                 bubble.frame = CGRect.zero
             }
         }
-        print("hello")
     }
     
     func addEvents(_ events: [Event]) {
