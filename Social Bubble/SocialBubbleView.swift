@@ -12,7 +12,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
-    let selectDirection = PublishSubject<Void>()
+    let selectDirection = PublishSubject<Event>()
 
     override init(frame: CGRect) {
         loggedIn = _loggedIn.asObservable()
@@ -49,7 +49,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
             
             rxs.disposeBag
                 ++ { [weak self] in self?.viewSelection(bubble) } <~ bubble.rxs.tap
-                ++ selectDirection.asObserver() <~ bubble.selectDirection
+                ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event }.ignoreNil()
         }
     }
     

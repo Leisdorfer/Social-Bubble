@@ -23,6 +23,7 @@ class BubbleView: UIButton {
             guard let start = event?.startTime, let end = event?.endTime else { return }
             let timeText = "\(start) - \(end)"
             time.text = timeText
+            isUserInteractionEnabled = true
             setNeedsLayout()
         }
     }
@@ -30,6 +31,7 @@ class BubbleView: UIButton {
     override init(frame: CGRect) {
         selectDirection = directions.rxs.tap
         super.init(frame: frame)
+        isUserInteractionEnabled = false
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         addShadow(withRadius: 8)
         styleLabels(labels: [name, eventDescription, time])
