@@ -8,7 +8,7 @@ class BubbleView: UIButton {
     private let eventDescription = UILabel()
     private let directions = UIButton()
     private var contentHidden = true
-    
+
     func updateEvent() {
         contentHidden = false
         setNeedsLayout()
@@ -72,7 +72,6 @@ class BubbleView: UIButton {
         let nameSize = name.sizeThatFits(contentArea.size)
         let timeSize = time.sizeThatFits(contentArea.size)
         let descriptionSize = eventDescription.isHidden ? CGSize.zero : eventDescription.sizeThatFits(contentArea.size)
-//        let directionSize = CGSize(width: 88, height: 88)
         let directionSize = directions.sizeThatFits(contentArea.size)
         let totalHeight = contentHidden ? nameSize.height : nameSize.height + Padding.large + timeSize.height + Padding.large + descriptionSize.height + Padding.large + directionSize.height
         name.frame = CGRect(x: contentArea.midX - nameSize.width/2, y: contentArea.midY - totalHeight/2, size: nameSize)

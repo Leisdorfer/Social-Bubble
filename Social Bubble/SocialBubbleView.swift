@@ -11,6 +11,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private var bubbles: [BubbleView] = []
     private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
+    private var userEnabledBubbles: [BubbleView] = []
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
@@ -59,26 +60,27 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     private func viewSelection(_ bubble: BubbleView) {
-        self.bubble = bubble
         let animation = Animation(bounds: bounds)
         animation.animateView(bubble, withinViews: bubbles)
-        bubble.updateEvent()
+        self.bubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
+        userEnabledBubbles = bubbles.filter { $0.isUserInteractionEnabled }
         _ = bubbles.filter { $0 != bubble }.map { $0.isUserInteractionEnabled = false }
         login.isUserInteractionEnabled = false
-        let tap = UITapGestureRecognizer(target: self, action: #selector(respond(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
         tap.delegate = self
         tap.cancelsTouchesInView = false
         addGestureRecognizer(tap)
+        bubble.updateEvent()
     }
     
-    @objc private func respond(_ recognizer: UITapGestureRecognizer) {
+    @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
         let pressedPoint = recognizer.location(in: self)
         if !bubble.frame.contains(pressedPoint) {
             blurView.effect = nil
             bubble.isHidden = true
             recognizer.isEnabled = false
-            _ = bubbles.map { $0.isUserInteractionEnabled = true }
+            _ = userEnabledBubbles.map { $0.isUserInteractionEnabled = true }
         }
     }
     
