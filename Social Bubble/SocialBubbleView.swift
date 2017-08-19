@@ -4,10 +4,12 @@ import FacebookCore
 import RxSugar
 import RxSwift
 
-class SocialBubbleView: UIView, LoginButtonDelegate {
+class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate {
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
+    private let blurView = UIVisualEffectView()
     private var bubbles: [BubbleView] = []
+    private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
     
     let loggedIn: Observable<Bool>
@@ -25,6 +27,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
         login.delegate = self
         addSubview(login)
         addBubbles()
+        blurView.isUserInteractionEnabled = false
+        addSubview(blurView)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,6 +37,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        blurView.frame = bounds
         let contentArea = bounds.insetBy(dx: Padding.large, dy: Padding.large)
         let titleSize = title.sizeThatFits(contentArea.size)
         title.frame = CGRect(x: contentArea.midX - titleSize.width/2, y: contentArea.minY, size: titleSize)
@@ -53,10 +58,28 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
         }
     }
     
-   private func viewSelection(_ bubble: BubbleView) {
+    private func viewSelection(_ bubble: BubbleView) {
+        self.bubble = bubble
         let animation = Animation(bounds: bounds)
         animation.animateView(bubble, withinViews: bubbles)
         bubble.updateEvent()
+        blurView.effect = UIBlurEffect(style: .dark)
+        _ = bubbles.filter { $0 != bubble }.map { $0.isUserInteractionEnabled = false }
+        login.isUserInteractionEnabled = false
+        let tap = UITapGestureRecognizer(target: self, action: #selector(respond(_:)))
+        tap.delegate = self
+        tap.cancelsTouchesInView = false
+        addGestureRecognizer(tap)
+    }
+    
+    @objc private func respond(_ recognizer: UITapGestureRecognizer) {
+        let pressedPoint = recognizer.location(in: self)
+        if !bubble.frame.contains(pressedPoint) {
+            blurView.effect = nil
+            bubble.isHidden = true
+            recognizer.isEnabled = false
+            _ = bubbles.map { $0.isUserInteractionEnabled = true }
+        }
     }
     
     private func layoutBubbles() {
@@ -85,7 +108,6 @@ class SocialBubbleView: UIView, LoginButtonDelegate {
         _ = zip(bubbles, events).map { $0.event = $1 }
     }
 
-    
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         switch result {
         case .failed(let error): print(error)
