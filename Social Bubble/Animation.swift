@@ -8,7 +8,7 @@ struct Animation {
     }
     
     func animateView(_ view: BubbleView, withinViews views: [BubbleView]) {
-        let duration: TimeInterval = 3
+        let duration: TimeInterval = 2
         UIView.animate(withDuration: duration, animations: {
             let diameter: CGFloat = self.bounds.width - (Padding.large * 2)
             self.animateCornerRadius(ofView: view, toRadius: diameter/2, forDuration: duration)
@@ -17,7 +17,9 @@ struct Animation {
             view.frame.size.height = diameter
             view.frame.size.width = diameter
             self.animateView(view, toFrontOf: views)
-        }, completion: nil)
+        }, completion: { (finished: Bool) in
+            view.updateEvent()
+        })
     }
     
     private func animateView(_ view: BubbleView, toFrontOf views: [BubbleView]) {

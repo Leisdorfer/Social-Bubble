@@ -11,7 +11,6 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private var bubbles: [BubbleView] = []
     private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
-    private var userEnabledBubbles: [BubbleView] = []
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
@@ -64,14 +63,12 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         animation.animateView(bubble, withinViews: bubbles)
         self.bubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
-        userEnabledBubbles = bubbles.filter { $0.isUserInteractionEnabled }
-        _ = bubbles.filter { $0 != bubble }.map { $0.isUserInteractionEnabled = false }
+        bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
         login.isUserInteractionEnabled = false
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
         tap.delegate = self
         tap.cancelsTouchesInView = false
         addGestureRecognizer(tap)
-        bubble.updateEvent()
     }
     
     @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
@@ -80,7 +77,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             blurView.effect = nil
             bubble.isHidden = true
             recognizer.isEnabled = false
-            _ = userEnabledBubbles.map { $0.isUserInteractionEnabled = true }
+            bubbles.forEach { $0.isUserInteractionEnabled = true }
         }
     }
     
@@ -107,7 +104,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     
     func addEvents(_ events: [Event]) {
 //TODO: get rid of bubbles without events
-        _ = zip(bubbles, events).map { $0.event = $1 }
+        zip(bubbles, events).forEach { $0.event = $1 }
     }
 
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -120,7 +117,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     
     public func loginButtonDidLogOut(_ loginButton: LoginButton) {
         print("user logged out!")
-        _ = bubbles.map { $0.event = nil }
+        bubbles.forEach { $0.event = nil }
     }
 }
 
