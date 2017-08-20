@@ -20,15 +20,15 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         loggedIn = _loggedIn.asObservable()
         super.init(frame: frame)
         backgroundColor = .black
+        addBubbles()
+        blurView.isUserInteractionEnabled = false
+        addSubview(blurView)
         title.textColor = .white
         title.text = "Social Bubble"
         title.font = UIFont.systemFont(ofSize: 54)
         addSubview(title)
         login.delegate = self
         addSubview(login)
-        addBubbles()
-        blurView.isUserInteractionEnabled = false
-        addSubview(blurView)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,18 +53,17 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             bubbles.append(bubble)
             
             rxs.disposeBag
-                ++ { [weak self] in self?.viewSelection(bubble) } <~ bubble.rxs.tap
+                ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap
                 ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event }.ignoreNil()
         }
     }
     
-    private func viewSelection(_ bubble: BubbleView) {
+    private func selectBubble(_ bubble: BubbleView) {
         let animation = Animation(bounds: bounds)
         animation.animateView(bubble, withinViews: bubbles)
         self.bubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
-        login.isUserInteractionEnabled = false
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
         tap.delegate = self
         tap.cancelsTouchesInView = false
@@ -88,7 +87,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             guard let `self` = self else { return }
             let diameter = CGFloat(arc4random_uniform(100) + 50)
             var x = CGFloat(arc4random_uniform(UInt32(self.bounds.maxX)))
-            var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY))
+            var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY + Padding.small))
             x = (x + diameter) > self.bounds.maxX || x == self.bounds.maxX ? x - diameter : x
             y = (y + diameter) > self.bounds.maxY ? y - diameter : y
             bubble.frame = CGRect(x: x, y: y, width: diameter, height: diameter)
