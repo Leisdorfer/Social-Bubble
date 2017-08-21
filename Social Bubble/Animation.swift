@@ -36,7 +36,7 @@ struct Animation {
             bubble.frame.size.height = diameter
             bubble.frame.size.width = diameter
         }, completion: { (finished: Bool) in
-            bubble.layer.zPosition = bubble.layer.zPosition - 1
+            bubble.layer.zPosition = 0
             view.isUserInteractionEnabled = true
             view.expandedBubble = false
         })
@@ -46,7 +46,7 @@ struct Animation {
     private func animateView(_ view: BubbleView, toFrontOf views: [BubbleView]) {
         view.layer.zPosition  = views.reduce(0) { $0 + $1.layer.zPosition } + 1
     }
-    
+
     private func animateCornerRadius (ofView view: BubbleView, toRadius radius: CGFloat, forDuration duration: TimeInterval) {
         let animation = CABasicAnimation(keyPath:"cornerRadius")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)

@@ -8,10 +8,11 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
     private let blurView = UIVisualEffectView()
+    
     private var bubbles: [BubbleView] = []
     private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
-    private var previousAnimation = Animation(bounds: CGRect.zero)
+    private var animation = Animation(bounds: CGRect.zero)
     var expandedBubble = false
     
     let loggedIn: Observable<Bool>
@@ -57,7 +58,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             rxs.disposeBag
                 ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap.filter { [weak self] in
                         guard let `self` = self else { return false }
-                        return !self.expandedBubble
+                        return !self.expandedBubble && bubble.event != nil
                    }
                 ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event }.ignoreNil()
         }
@@ -65,8 +66,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     
     private func selectBubble(_ bubble: BubbleView) {
         isUserInteractionEnabled = false
-        let animation = Animation(bounds: bounds)
-        previousAnimation = animation.animateInView(bubble, amongstBubbles: bubbles, withinView: self)
+        animation = Animation(bounds: bounds).animateInView(bubble, amongstBubbles: bubbles, withinView: self)
         self.bubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
@@ -85,7 +85,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         if !bubble.frame.contains(pressedPoint) {
             isUserInteractionEnabled = false
             blurView.effect = nil
-            _ = previousAnimation.animateOutView(bubble, withinView: self)
+            _ = animation.animateOutView(bubble, withinView: self)
             bubbles.forEach { $0.isUserInteractionEnabled = true }
         }
     }
