@@ -32,8 +32,15 @@ class BubbleView: UIButton {
     private var contentHidden = true
     var totalHeight: CGFloat = 0
 
-    func updateEvent() {
+    func showEvent() {
         contentHidden = false
+        setNeedsLayout()
+    }
+    
+    func hideEvent() {
+        contentHidden = true
+        [topDivider, scrollView, bottomDivider].forEach { $0.isHidden = true }
+        details.isUserInteractionEnabled = true
         setNeedsLayout()
     }
     

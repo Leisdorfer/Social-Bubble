@@ -11,6 +11,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private var bubbles: [BubbleView] = []
     private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
+    private var previousAnimation = Animation(bounds: CGRect.zero)
+    var expandedBubble = false
     
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
@@ -53,29 +55,37 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             bubbles.append(bubble)
             
             rxs.disposeBag
-                ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap
+                ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap.filter { [weak self] in
+                        guard let `self` = self else { return false }
+                        return !self.expandedBubble
+                   }
                 ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event }.ignoreNil()
         }
     }
     
     private func selectBubble(_ bubble: BubbleView) {
+        isUserInteractionEnabled = false
         let animation = Animation(bounds: bounds)
-        animation.animateView(bubble, withinViews: bubbles)
+        previousAnimation = animation.animateInView(bubble, amongstBubbles: bubbles, withinView: self)
         self.bubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
-        tap.delegate = self
-        tap.cancelsTouchesInView = false
-        addGestureRecognizer(tap)
+        receiveTaps()
     }
     
+    private func receiveTaps() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
+        tap.delegate = self
+        addGestureRecognizer(tap)
+    }
+
+//TODO: ensure that dismissBubble is called when an area outside of the selected bubble is tapped
     @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
         let pressedPoint = recognizer.location(in: self)
         if !bubble.frame.contains(pressedPoint) {
+            isUserInteractionEnabled = false
             blurView.effect = nil
-            bubble.isHidden = true
-            recognizer.isEnabled = false
+            _ = previousAnimation.animateOutView(bubble, withinView: self)
             bubbles.forEach { $0.isUserInteractionEnabled = true }
         }
     }

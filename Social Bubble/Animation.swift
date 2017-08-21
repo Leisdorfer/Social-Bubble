@@ -2,29 +2,49 @@ import UIKit
 
 struct Animation {
     private let bounds: CGRect
+    private let duration: TimeInterval = 1
 
     init(bounds: CGRect) {
         self.bounds = bounds
     }
-    
-    func animateView(_ view: BubbleView, withinViews views: [BubbleView]) {
-        let duration: TimeInterval = 2
+
+    func animateInView(_ bubble: BubbleView, amongstBubbles bubbles: [BubbleView], withinView view: SocialBubbleView) -> Animation {
+        let intialBubble = bubble.frame
         UIView.animate(withDuration: duration, animations: {
             let diameter: CGFloat = self.bounds.width - (Padding.large * 2)
-            self.animateCornerRadius(ofView: view, toRadius: diameter/2, forDuration: duration)
-            view.frame.origin.y = self.bounds.midY - diameter/2
-            view.frame.origin.x = self.bounds.midX - diameter/2
-            view.frame.size.height = diameter
-            view.frame.size.width = diameter
-            self.animateView(view, toFrontOf: views)
+            self.animateCornerRadius(ofView: bubble, toRadius: diameter/2, forDuration: self.duration)
+            bubble.frame.origin.y = self.bounds.midY - diameter/2
+            bubble.frame.origin.x = self.bounds.midX - diameter/2
+            bubble.frame.size.height = diameter
+            bubble.frame.size.width = diameter
+            self.animateView(bubble, toFrontOf: bubbles)
         }, completion: { (finished: Bool) in
-            view.updateEvent()
+            bubble.showEvent()
+            view.isUserInteractionEnabled = true
+            view.expandedBubble = true
         })
+       return Animation(bounds: intialBubble)
+    }
+    
+    func animateOutView(_ bubble: BubbleView, withinView view: SocialBubbleView) -> Animation {
+        bubble.hideEvent()
+        UIView.animate(withDuration: duration, animations: {
+            let diameter: CGFloat = self.bounds.width
+            self.animateCornerRadius(ofView: bubble, toRadius: diameter/2, forDuration: self.duration)
+            bubble.frame.origin.y = self.bounds.midY - diameter/2
+            bubble.frame.origin.x = self.bounds.midX - diameter/2
+            bubble.frame.size.height = diameter
+            bubble.frame.size.width = diameter
+        }, completion: { (finished: Bool) in
+            bubble.layer.zPosition = bubble.layer.zPosition - 1
+            view.isUserInteractionEnabled = true
+            view.expandedBubble = false
+        })
+        return Animation(bounds: bubble.bounds)
     }
     
     private func animateView(_ view: BubbleView, toFrontOf views: [BubbleView]) {
-        let maxZPosition = views.reduce(0) { $0 + $1.layer.zPosition }
-        view.layer.zPosition = maxZPosition + 1
+        view.layer.zPosition  = views.reduce(0) { $0 + $1.layer.zPosition } + 1
     }
     
     private func animateCornerRadius (ofView view: BubbleView, toRadius radius: CGFloat, forDuration duration: TimeInterval) {
