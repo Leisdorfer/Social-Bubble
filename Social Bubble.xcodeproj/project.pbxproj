@@ -25,7 +25,6 @@
 		17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAA21F41DB1500580940 /* ViewController.swift */; };
 		17ECDAA81F41DB1500580940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17ECDAA71F41DB1500580940 /* Assets.xcassets */; };
 		17ECDAB61F41DB1500580940 /* Social_BubbleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAB51F41DB1500580940 /* Social_BubbleTests.swift */; };
-		17ECDAC11F41DB1500580940 /* Social_BubbleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAC01F41DB1500580940 /* Social_BubbleUITests.swift */; };
 		17ECDACF1F41DD2200580940 /* SocialBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */; };
 		17ECDAD61F41E1E300580940 /* HelperMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAD51F41E1E300580940 /* HelperMethods.swift */; };
 /* End PBXBuildFile section */
@@ -93,8 +92,6 @@
 		17ECDAB51F41DB1500580940 /* Social_BubbleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social_BubbleTests.swift; sourceTree = "<group>"; };
 		17ECDAB71F41DB1500580940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17ECDABC1F41DB1500580940 /* Social BubbleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Social BubbleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		17ECDAC01F41DB1500580940 /* Social_BubbleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social_BubbleUITests.swift; sourceTree = "<group>"; };
-		17ECDAC21F41DB1500580940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialBubbleView.swift; sourceTree = "<group>"; };
 		17ECDAD51F41E1E300580940 /* HelperMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMethods.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,7 +143,6 @@
 			children = (
 				17ECDA9F1F41DB1500580940 /* Social Bubble */,
 				17ECDAB41F41DB1500580940 /* Social BubbleTests */,
-				17ECDABF1F41DB1500580940 /* Social BubbleUITests */,
 				17ECDA9E1F41DB1500580940 /* Products */,
 				177722171F43304B000164A4 /* Frameworks */,
 			);
@@ -186,15 +182,6 @@
 				17ECDAB71F41DB1500580940 /* Info.plist */,
 			);
 			path = "Social BubbleTests";
-			sourceTree = "<group>";
-		};
-		17ECDABF1F41DB1500580940 /* Social BubbleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				17ECDAC01F41DB1500580940 /* Social_BubbleUITests.swift */,
-				17ECDAC21F41DB1500580940 /* Info.plist */,
-			);
-			path = "Social BubbleUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,7 +339,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17ECDAC11F41DB1500580940 /* Social_BubbleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,7 +480,7 @@
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-Bubble";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -512,7 +498,7 @@
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-Bubble";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -527,6 +513,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "Social BubbleTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-BubbleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -542,6 +529,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "Social BubbleTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "leisdorfer67-gmail.com.Social-BubbleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -96,7 +96,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         defer { visibleBubbles = []; _loggedIn.value = AccessToken.current != nil }
         bubbles.forEach { [weak self] bubble in
             guard let `self` = self else { return }
-            let diameter = CGFloat(arc4random_uniform(100) + 50)
+            let diameter = CGFloat(arc4random_uniform(100) + 60)
             var x = CGFloat(arc4random_uniform(UInt32(self.bounds.maxX)))
             var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY + Padding.small))
             x = (x + diameter) > self.bounds.maxX || x == self.bounds.maxX ? x - diameter : x

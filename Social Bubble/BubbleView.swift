@@ -29,7 +29,7 @@ class BubbleView: UIButton {
     private let directions = UIButton()
     private let details = UIButton()
     private var contentHidden = true
-    
+
     let selectDirection: Observable<Void>
     let selectDetails: Observable<Void>
     let event = Variable<Event?>(nil)
@@ -45,7 +45,7 @@ class BubbleView: UIButton {
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 0.75, alpha: 1.0)
         addShadow(withRadius: 10)
         styleLabels(labels: [name, time])
-        name.font = UIFont.systemFont(ofSize: 22)
+        name.font = UIFont.systemFont(ofSize: 20)
         addSubview(name)
         time.font = UIFont.systemFont(ofSize: 18)
         addSubview(time)
@@ -73,7 +73,7 @@ class BubbleView: UIButton {
             ++ { [weak self] in self?.displayDetails() } <~ selectDetails
             ++ { [weak self] in self?.hideOrDisplayEvent($0) } <~ _displayEvent.asObservable()
     }
-    
+  
     private func displayEventContent(_ event: Event?) {
         name.text = event?.name
         eventDescription.text = event?.description
@@ -153,7 +153,7 @@ class BubbleView: UIButton {
     }
     
     private func addShadow(withRadius radius: CGFloat) {
-        layer.shadowColor = backgroundColor?.cgColor//UIColor.white.cgColor
+        layer.shadowColor = backgroundColor?.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowOpacity = 0.75
         layer.shadowRadius = radius

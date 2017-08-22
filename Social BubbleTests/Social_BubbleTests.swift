@@ -1,13 +1,5 @@
-//
-//  Social_BubbleTests.swift
-//  Social BubbleTests
-//
-//  Created by Eisdorfer, Lauren on 8/14/17.
-//  Copyright © 2017 Eisdorfer, Lauren. All rights reserved.
-//
-
 import XCTest
-@testable import Social_Bubble
+import Social_Bubble
 
 class Social_BubbleTests: XCTestCase {
     
