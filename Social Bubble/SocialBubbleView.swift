@@ -56,11 +56,12 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             let bubble = BubbleView()
             addSubview(bubble)
             bubbles.append(bubble)
+            bubble.isHidden = true
             
             rxs.disposeBag
                 ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap.filter { [weak self] in
                         guard let `self` = self else { return false }
-                        return !self._expandedBubble.value && bubble.event.value != nil
+                        return !self._expandedBubble.value
                    }
                 ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event.value }.ignoreNil()
         }
@@ -112,8 +113,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     func addEvents(_ events: [Event]) {
-//TODO: get rid of bubbles without events
-        zip(bubbles, events).forEach { $0.event.value = $1 }
+        zip(bubbles, events).forEach { $0.event.value = $1; $0.isHidden = false }
     }
 
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
