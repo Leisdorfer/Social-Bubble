@@ -8,6 +8,7 @@ class Divider: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        layer.opacity = 0.5
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,6 +42,7 @@ class BubbleView: UIButton {
         selectDetails = details.rxs.tap
         displayEvent = _displayEvent.asObserver()
         super.init(frame: frame)
+        layer.masksToBounds = true
         isUserInteractionEnabled = false
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 0.75, alpha: 1.0)
         addShadow(withRadius: 10)
@@ -110,9 +112,9 @@ class BubbleView: UIButton {
     
     private func styleButtons(buttons: [UIButton]) {
         buttons.forEach {
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.setTitleColor(.white, for: .normal)
+            $0.layer.backgroundColor = UIColor.white.cgColor
+            $0.setTitleColor(backgroundColor, for: .normal)
+            $0.layer.cornerRadius = 2
         }
     }
 
@@ -135,7 +137,7 @@ class BubbleView: UIButton {
         let buttonSize = directionsSize.width > detailsSize.width ? directionsSize : detailsSize
         let dividerArea = contentArea.insetBy(dx: Padding.small, dy: 0)
         let dividerSize = topDivider.sizeThatFits(dividerArea.size)
-        let scrollViewHeight: CGFloat = 75
+        let scrollViewHeight = min(topDivider.frame.maxY/2, descriptionSize.height)
         var totalHeight = contentHidden ? nameSize.height : nameSize.height + Padding.small + timeSize.height + Padding.small + buttonSize.height
         totalHeight = scrollView.isHidden ? totalHeight : nameSize.height + Padding.small + timeSize.height + Padding.small + dividerSize.height + Padding.small + scrollViewHeight + Padding.small + dividerSize.height + Padding.small + buttonSize.height
         name.frame = CGRect(x: contentArea.midX - nameSize.width/2, y: contentArea.midY - totalHeight/2, size: nameSize)
