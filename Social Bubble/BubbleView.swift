@@ -28,44 +28,22 @@ class BubbleView: UIButton {
     private let bottomDivider = Divider()
     private let directions = UIButton()
     private let details = UIButton()
-    
     private var contentHidden = true
-    var totalHeight: CGFloat = 0
-
-    func showEvent() {
-        contentHidden = false
-        setNeedsLayout()
-    }
-    
-    func hideEvent() {
-        contentHidden = true
-        [topDivider, scrollView, bottomDivider].forEach { $0.isHidden = true }
-        details.isUserInteractionEnabled = true
-        setNeedsLayout()
-    }
     
     let selectDirection: Observable<Void>
     let selectDetails: Observable<Void>
-    
-    var event: Event? {
-        didSet {
-            name.text = event?.name
-            eventDescription.text = event?.description
-            if let start = event?.startTime, let end = event?.endTime {
-                time.text = "Aug 19 at 2pm to Aug 20 at 3pm"//"\(start) - \(end)"
-            }
-            isUserInteractionEnabled = true
-            setNeedsLayout()
-        }
-    }
-    
+    let event = Variable<Event?>(nil)
+    let displayEvent: AnyObserver<Bool>
+    private let _displayEvent = Variable<Bool>(false)
+
     override init(frame: CGRect) {
         selectDirection = directions.rxs.tap
         selectDetails = details.rxs.tap
+        displayEvent = _displayEvent.asObserver()
         super.init(frame: frame)
         isUserInteractionEnabled = false
-        backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-        addShadow(withRadius: 8)
+        backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 0.75, alpha: 1.0)
+        addShadow(withRadius: 10)
         styleLabels(labels: [name, time])
         name.font = UIFont.systemFont(ofSize: 22)
         addSubview(name)
@@ -91,13 +69,33 @@ class BubbleView: UIButton {
         addSubview(details)
         
         rxs.disposeBag
+            ++ { [weak self] in self?.displayEventContent($0) } <~ event.asObservable()
             ++ { [weak self] in self?.displayDetails() } <~ selectDetails
-        
+            ++ { [weak self] in self?.hideOrDisplayEvent($0) } <~ _displayEvent.asObservable()
+    }
+    
+    private func displayEventContent(_ event: Event?) {
+        name.text = event?.name
+        eventDescription.text = event?.description
+        time.text = "Aug 19 at 2pm to Aug 20 at 3pm"
+        isUserInteractionEnabled = true
+        setNeedsLayout()
     }
     
     private func displayDetails() {
         [topDivider, scrollView, bottomDivider].forEach { $0.isHidden = false }
         details.isUserInteractionEnabled = false
+        setNeedsLayout()
+    }
+    
+    private func hideOrDisplayEvent(_ shouldDisplay: Bool) {
+        if shouldDisplay {
+            contentHidden = false
+        } else {
+            contentHidden = true
+            [topDivider, scrollView, bottomDivider].forEach { $0.isHidden = true }
+            details.isUserInteractionEnabled = true
+        }
         setNeedsLayout()
     }
     
@@ -138,7 +136,7 @@ class BubbleView: UIButton {
         let dividerArea = contentArea.insetBy(dx: Padding.small, dy: 0)
         let dividerSize = topDivider.sizeThatFits(dividerArea.size)
         let scrollViewHeight: CGFloat = 75
-        totalHeight = contentHidden ? nameSize.height : nameSize.height + Padding.small + timeSize.height + Padding.small + buttonSize.height
+        var totalHeight = contentHidden ? nameSize.height : nameSize.height + Padding.small + timeSize.height + Padding.small + buttonSize.height
         totalHeight = scrollView.isHidden ? totalHeight : nameSize.height + Padding.small + timeSize.height + Padding.small + dividerSize.height + Padding.small + scrollViewHeight + Padding.small + dividerSize.height + Padding.small + buttonSize.height
         name.frame = CGRect(x: contentArea.midX - nameSize.width/2, y: contentArea.midY - totalHeight/2, size: nameSize)
         time.frame = CGRect(x: contentArea.midX - timeSize.width/2, y: name.frame.maxY + Padding.small, size: timeSize)
@@ -155,7 +153,7 @@ class BubbleView: UIButton {
     }
     
     private func addShadow(withRadius radius: CGFloat) {
-        layer.shadowColor = UIColor.white.cgColor
+        layer.shadowColor = backgroundColor?.cgColor//UIColor.white.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowOpacity = 0.75
         layer.shadowRadius = radius

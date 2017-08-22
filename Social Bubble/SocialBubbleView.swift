@@ -8,19 +8,21 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
     private let blurView = UIVisualEffectView()
+    private var animation: Animation?
     
+    private var selectedBubble = BubbleView()
     private var bubbles: [BubbleView] = []
-    private var bubble = BubbleView()
     private var visibleBubbles: [BubbleView] = []
-    private var animation = Animation(bounds: CGRect.zero)
-    var expandedBubble = false
     
+    let selectDirection = PublishSubject<Event>()
     let loggedIn: Observable<Bool>
     private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
-    let selectDirection = PublishSubject<Event>()
+    let expandedBubble: AnyObserver<Bool>
+    private let _expandedBubble = Variable<Bool>(false)
 
     override init(frame: CGRect) {
         loggedIn = _loggedIn.asObservable()
+        expandedBubble = _expandedBubble.asObserver()
         super.init(frame: frame)
         backgroundColor = .black
         addBubbles()
@@ -58,16 +60,15 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             rxs.disposeBag
                 ++ { [weak self] in self?.selectBubble(bubble) } <~ bubble.rxs.tap.filter { [weak self] in
                         guard let `self` = self else { return false }
-                        return !self.expandedBubble && bubble.event != nil
+                        return !self._expandedBubble.value && bubble.event.value != nil
                    }
-                ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event }.ignoreNil()
+                ++ selectDirection.asObserver() <~ bubble.selectDirection.map { bubble.event.value }.ignoreNil()
         }
     }
     
     private func selectBubble(_ bubble: BubbleView) {
-        isUserInteractionEnabled = false
-        animation = Animation(bounds: bounds).animateInView(bubble, amongstBubbles: bubbles, withinView: self)
-        self.bubble = bubble
+        animation = Animation(bubble: bubble, view: self, bounds: bounds).animateInBubbleView(amongstBubbles: bubbles)
+        self.selectedBubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
         receiveTaps()
@@ -82,10 +83,9 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
 //TODO: ensure that dismissBubble is called when an area outside of the selected bubble is tapped
     @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
         let pressedPoint = recognizer.location(in: self)
-        if !bubble.frame.contains(pressedPoint) {
-            isUserInteractionEnabled = false
+        if !selectedBubble.frame.contains(pressedPoint) {
             blurView.effect = nil
-            _ = animation.animateOutView(bubble, withinView: self)
+            animation?.animateOutBubbleView()
             bubbles.forEach { $0.isUserInteractionEnabled = true }
         }
     }
@@ -113,7 +113,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     
     func addEvents(_ events: [Event]) {
 //TODO: get rid of bubbles without events
-        zip(bubbles, events).forEach { $0.event = $1 }
+        zip(bubbles, events).forEach { $0.event.value = $1 }
     }
 
     public func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -125,8 +125,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     public func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        print("user logged out!")
-        bubbles.forEach { $0.event = nil }
+        bubbles.forEach { $0.event.value = nil }
     }
 }
 
