@@ -2,27 +2,21 @@ import XCTest
 import Social_Bubble
 
 class Social_BubbleTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    func testTimeStringConvertibleToDate() {
+        let dateString = "2017-09-17T20:00:00-0500"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sszz"
+        let date = formatter.date(from: dateString)
+        formatter.dateFormat = "MMM d 'at' ha"
+        let formattedDateString = formatter.string(from: date!)
+        XCTAssertEqual("Sep 17 at 8PM", formattedDateString)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testFormatterReturnsCorrectString() {
+        let startTime = "2017-09-17T20:00:00-0500"
+        let endTime = "2017-09-17T22:00:00-0500"
+        let time = ServiceLayer().formattedTime(startTime: startTime, endTime: endTime)
+        XCTAssertEqual(time, "Sep 17 at 8PM to Sep 17 at 10PM")
     }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }

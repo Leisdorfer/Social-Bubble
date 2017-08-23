@@ -79,7 +79,7 @@ class BubbleView: UIButton {
     private func displayEventContent(_ event: Event?) {
         name.text = event?.name
         eventDescription.text = event?.description
-        time.text = "Aug 19 at 2pm to Aug 20 at 3pm"
+        time.text = event?.time
         isUserInteractionEnabled = true
         setNeedsLayout()
     }
