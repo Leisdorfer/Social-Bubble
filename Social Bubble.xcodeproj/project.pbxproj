@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		167F50E11F45295E0032EFF2 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F50E01F45295E0032EFF2 /* BubbleView.swift */; };
+		167F50E31F4DFB2F0032EFF2 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F50E21F4DFB2F0032EFF2 /* PaddedTextField.swift */; };
 		171FF2211F43858F00926487 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1790935A1F43831900F6161F /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2231F43859300926487 /* RxSugar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093581F43830E00F6161F /* RxSugar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FF2241F43869200926487 /* SocialBubbleModel.swift */; };
@@ -70,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		167F50E01F45295E0032EFF2 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		167F50E21F4DFB2F0032EFF2 /* PaddedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		170571291F4344C00000324A /* FacebookCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookCore.framework; path = Carthage/Build/iOS/FacebookCore.framework; sourceTree = "<group>"; };
 		1705712A1F4344CE0000324A /* FacebookLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookLogin.framework; path = Carthage/Build/iOS/FacebookLogin.framework; sourceTree = "<group>"; };
 		171FF2241F43869200926487 /* SocialBubbleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialBubbleModel.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				171FF2241F43869200926487 /* SocialBubbleModel.swift */,
 				167F50E01F45295E0032EFF2 /* BubbleView.swift */,
 				17D2CFA11F461A5A00FFC7D8 /* Animation.swift */,
+				167F50E21F4DFB2F0032EFF2 /* PaddedTextField.swift */,
 			);
 			path = "Social Bubble";
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				167F50E11F45295E0032EFF2 /* BubbleView.swift in Sources */,
+				167F50E31F4DFB2F0032EFF2 /* PaddedTextField.swift in Sources */,
 				171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */,
 				17D2CFA21F461A5A00FFC7D8 /* Animation.swift in Sources */,
 				177722111F42300F000164A4 /* ServiceLayer.swift in Sources */,

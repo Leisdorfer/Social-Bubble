@@ -47,15 +47,15 @@ class BubbleView: UIButton {
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 0.75, alpha: 1.0)
         addShadow(withRadius: 10)
         styleLabels(labels: [name, time])
-        name.font = UIFont.systemFont(ofSize: 20)
+        name.font = UIFont(name: "HelveticaNeue", size: 20)
         addSubview(name)
-        time.font = UIFont.systemFont(ofSize: 18)
+        time.font = UIFont(name: "HelveticaNeue", size: 18)
         addSubview(time)
         topDivider.isHidden = true
         addSubview(topDivider)
         scrollView.isHidden = true
         addSubview(scrollView)
-        eventDescription.font = UIFont.systemFont(ofSize: 16)
+        eventDescription.font = UIFont(name: "HelveticaNeue", size: 16)
         eventDescription.numberOfLines = 0
         eventDescription.textColor = .white
         eventDescription.textAlignment = .center

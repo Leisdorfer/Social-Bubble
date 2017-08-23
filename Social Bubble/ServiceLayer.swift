@@ -23,9 +23,9 @@ public struct ServiceLayer {
     
     public init() {}
 
-    func fetchEvents() {
+    func fetchEvents(withSearchTerm searchTerm: String) {
         let connection = GraphRequestConnection()
-        connection.add(GraphRequest(graphPath: "/search?q=St.Louis&type=event")) { response, result in
+        connection.add(GraphRequest(graphPath: "/search?q=\(searchTerm)&type=event")) { response, result in
             switch result {
             case .success(let response):
                 guard let _json = response.dictionaryValue, let json = _json["data"] as? [[String: Any]] else { return }

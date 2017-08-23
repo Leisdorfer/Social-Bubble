@@ -13,7 +13,7 @@ class SocialBubbleModel: RXSObject {
             ++  events <~ serviceLayer.events
     }
     
-    func fetchEvents() {
-       serviceLayer.fetchEvents()
+    func fetchEvents(_ searchTerm: String) {
+        serviceLayer.fetchEvents(withSearchTerm: searchTerm)
     }
 }
