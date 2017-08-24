@@ -39,7 +39,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addSubview(blurView)
         title.textColor = .white
         title.text = "Social Bubble"
-        title.font = UIFont(name: "HelveticaNeue", size: 54)
+        title.font = UIFont(name: "HelveticaNeue", size: 50)
         addSubview(title)
         login.delegate = self
         addSubview(login)
@@ -92,7 +92,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
 
     private func addBubbles() {
-        (0...30).forEach { _ in
+        (0...10).forEach { _ in
             let bubble = BubbleView()
             addSubview(bubble)
             bubbles.append(bubble)
@@ -134,21 +134,21 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private func layoutBubbles() {
 //TODO: replace the access token check with an Rx substitute
         defer { visibleBubbles = []; _loggedIn.value = AccessToken.current != nil }
-        bubbles.forEach { [weak self] bubble in
-            guard let `self` = self else { return }
-            let diameter = CGFloat(arc4random_uniform(100) + 60)
-            var x = CGFloat(arc4random_uniform(UInt32(self.bounds.maxX)))
-            var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY + Padding.small))
-            x = (x + diameter) > self.bounds.maxX || x == self.bounds.maxX ? x - diameter : x
-            y = (y + diameter) > self.bounds.maxY ? y - diameter : y
-            bubble.frame = CGRect(x: x, y: y, width: diameter, height: diameter)
-            let intersect = self.visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
-            let visible = bubble.frame.intersects(self.bounds)
-            if !intersect && visible {
-                self.visibleBubbles.append(bubble)
-            } else {
-                bubble.frame = CGRect.zero
-            }
+        bubbles.forEach { [weak self] in self?.layoutRandomBubble(bubble: $0) }
+    }
+    
+    private func layoutRandomBubble(bubble: BubbleView) {
+        let diameter = CGFloat(arc4random_uniform(100) + 75)
+        var x = CGFloat(arc4random_uniform(UInt32(self.bounds.maxX)))
+        var y = CGFloat(arc4random_uniform(UInt32(self.bounds.maxY)) + UInt32(self.login.frame.maxY))
+        x = (x + diameter) > self.bounds.maxX || x == self.bounds.maxX ? x - diameter : x
+        y = (y + diameter) > self.bounds.maxY ? y - diameter : y
+        bubble.frame = CGRect(x: x, y: y, width: diameter, height: diameter)
+        let intersect = self.visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
+        if intersect {
+            layoutRandomBubble(bubble: bubble)
+        } else {
+            self.visibleBubbles.append(bubble)
         }
     }
     
