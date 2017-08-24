@@ -129,7 +129,8 @@ class BubbleView: UIButton {
         details.isHidden = contentHidden
         layer.cornerRadius = bounds.width/2
         let contentArea = bounds.insetBy(dx: Padding.small, dy: Padding.small)
-        let nameSize = name.sizeThatFits(contentArea.size)
+        let confinedNameArea = contentArea.insetBy(dx: Padding.large * 2, dy: 0)
+        let nameSize = contentHidden ? name.sizeThatFits(contentArea.size) : name.sizeThatFits(confinedNameArea.size)
         let timeSize = time.sizeThatFits(contentArea.size)
         let descriptionSize = eventDescription.sizeThatFits(scrollView.contentSize)
         let detailsSize = details.sizeThatFits(contentArea.size)
