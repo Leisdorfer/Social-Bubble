@@ -112,6 +112,9 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         self.selectedBubble = bubble
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.filter { $0 != bubble }.forEach { $0.isUserInteractionEnabled = false }
+        login.isHidden = true
+        search.isHidden = true
+        textField.isHidden = true
         receiveTaps()
     }
     
@@ -123,11 +126,15 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
 
 //TODO: ensure that dismissBubble is called when an area outside of the selected bubble is tapped
     @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
+        guard _loggedIn.value == true else { return }
         let pressedPoint = recognizer.location(in: self)
         if !selectedBubble.frame.contains(pressedPoint) {
             blurView.effect = nil
             animation?.animateOutBubbleView()
             bubbles.forEach { $0.isUserInteractionEnabled = true }
+            login.isHidden = false
+            search.isHidden = false
+            textField.isHidden = false
         }
     }
     
@@ -146,9 +153,10 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         bubble.frame = CGRect(x: x, y: y, width: diameter, height: diameter)
         let intersect = self.visibleBubbles.reduce(false) { $0 || $1.frame.intersects(bubble.frame) }
         if intersect {
+            bubble.frame = .zero
             layoutRandomBubble(bubble: bubble)
         } else {
-            self.visibleBubbles.append(bubble)
+            visibleBubbles.append(bubble)
         }
     }
     
@@ -162,12 +170,18 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         switch result {
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
-        case .success(_, _, _):_loggedIn.onNext(true)
+        case .success(_, _, _):
+            _loggedIn.onNext(true)
+            bubbles.forEach { $0.isHidden = true }
+            blurView.effect = nil
+            setNeedsLayout()
         }
     }
     
     public func loginButtonDidLogOut(_ loginButton: LoginButton) {
         bubbles.forEach { $0.event.value = nil }
+        blurView.effect = UIBlurEffect(style: .dark)
+        bubbles.forEach { $0.isUserInteractionEnabled = false }
     }
 }
 
