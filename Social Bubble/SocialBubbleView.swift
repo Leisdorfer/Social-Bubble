@@ -3,28 +3,27 @@ import FacebookLogin
 import FacebookCore
 import RxSugar
 import RxSwift
+import SpriteKit
 
 class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate {
     private let title = UILabel()
     private let login = LoginButton(readPermissions: [.publicProfile])
     private let textField = PlaceholderPaddedTextField()
     private let search = UIButton()
+    private let screenSaver = SKView()
     private let blurView = UIVisualEffectView()
     private var animation: Animation?
-    
     private var selectedBubble = BubbleView()
     private var bubbles: [BubbleView] = []
     private var visibleBubbles: [BubbleView] = []
+    private var loggedIn: Bool { return AccessToken.current != nil }
     
     let selectDirection = PublishSubject<Event>()
-    let loggedIn: Observable<Bool>
-    private let _loggedIn = Variable<Bool>(AccessToken.current != nil)
     let expandedBubble: AnyObserver<Bool>
     private let _expandedBubble = Variable<Bool>(false)
     let searchTerm: Observable<String>
 
     override init(frame: CGRect) {
-        loggedIn = _loggedIn.asObservable()
         expandedBubble = _expandedBubble.asObserver()
         let searchSelection = search.rxs.tap
         let term = textField.rxs.text
@@ -35,7 +34,11 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         super.init(frame: frame)
         backgroundColor = .black
         addBubbles()
+        addSubview(screenSaver)
+        let scene = BubbleScene(size: CGSize(width: 50, height: 50))
+        screenSaver.presentScene(scene)
         blurView.isUserInteractionEnabled = false
+        blurView.effect = !loggedIn ? UIBlurEffect(style: .dark) : nil
         addSubview(blurView)
         title.textColor = .white
         title.text = "Social Bubble"
@@ -52,7 +55,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addSubview(search)
         
         rxs.disposeBag
-            ++ { [weak self] in self?.showAlert() } <~ searchSelection.filter { self._loggedIn.value == false }
+            ++ { [weak self] in self?.showAlert() } <~ searchSelection.filter { !self.loggedIn }
+            ++ { [weak self] in self?.showBubbles() } <~ searchTerm.toVoid().filter { self.loggedIn }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +77,14 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addRadius(toCorner: [.topLeft, .bottomLeft], ofView: textField)
         search.frame = CGRect(x: textField.frame.maxX, y: textField.frame.minY, size: searchSize)
         addRadius(toCorner: [.topRight, .bottomRight], ofView: search)
+        let height = bounds.height - search.frame.maxY
+        screenSaver.frame = CGRect(x: bounds.minX - (bounds.height - bounds.width)/2, y: search.frame.maxY, width: height, height: height)
+    }
+    
+    private func showBubbles() {
+        screenSaver.isHidden = true
         layoutBubbles()
+        blurView.effect = nil
     }
     
     private func addRadius(toCorner corner: UIRectCorner, ofView view: UIView) {
@@ -92,7 +103,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
 
     private func addBubbles() {
-        (0...10).forEach { _ in
+        (0...8).forEach { _ in
             let bubble = BubbleView()
             addSubview(bubble)
             bubbles.append(bubble)
@@ -126,7 +137,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
 
 //TODO: ensure that dismissBubble is called when an area outside of the selected bubble is tapped
     @objc private func dismissBubble(_ recognizer: UITapGestureRecognizer) {
-        guard _loggedIn.value == true else { return }
+        guard loggedIn && _expandedBubble.value else { return }
         let pressedPoint = recognizer.location(in: self)
         if !selectedBubble.frame.contains(pressedPoint) {
             blurView.effect = nil
@@ -139,9 +150,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     private func layoutBubbles() {
-//TODO: replace the access token check with an Rx substitute
-        defer { visibleBubbles = []; _loggedIn.value = AccessToken.current != nil }
         bubbles.forEach { [weak self] in self?.layoutRandomBubble(bubble: $0) }
+        visibleBubbles = []
     }
     
     private func layoutRandomBubble(bubble: BubbleView) {
@@ -171,9 +181,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         case .failed(let error): print(error)
         case .cancelled: print("user cancelled login")
         case .success(_, _, _):
-            _loggedIn.onNext(true)
             bubbles.forEach { $0.isHidden = true }
-            blurView.effect = nil
             setNeedsLayout()
         }
     }
@@ -182,6 +190,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         bubbles.forEach { $0.event.value = nil }
         blurView.effect = UIBlurEffect(style: .dark)
         bubbles.forEach { $0.isUserInteractionEnabled = false }
+        screenSaver.isHidden = false
     }
 }
 
