@@ -5,8 +5,8 @@ import RxSwift
 struct Binding {
     static func bind(view: SocialBubbleView, model: SocialBubbleModel, controller: ViewController) {
         view.rxs.disposeBag
-            ++ { model.fetchEvents($0) } <~ view.searchTerm.debug()
-            ++ { view.addEvents($0) } <~ model.events
+            ++ { model.fetchEvents($0) } <~ view.searchTerm
+            ++ { view.addEvents($0) } <~ model.localEvents
             ++ { controller.displayDirections($0) } <~ view.selectDirection.asObservable()
     }
 }

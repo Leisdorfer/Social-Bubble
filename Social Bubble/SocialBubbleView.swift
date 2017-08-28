@@ -150,7 +150,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     private func layoutBubbles() {
-        bubbles.forEach { [weak self] in self?.layoutRandomBubble(bubble: $0) }
+        bubbles.forEach { layoutRandomBubble(bubble: $0) }
         visibleBubbles = []
     }
     
