@@ -103,7 +103,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
 
     private func addBubbles() {
-        (0...8).forEach { _ in
+        (0...10).forEach { _ in
             let bubble = BubbleView()
             addSubview(bubble)
             bubbles.append(bubble)
