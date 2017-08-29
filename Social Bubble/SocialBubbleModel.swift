@@ -5,8 +5,10 @@ import RxSwift
 
 class SocialBubbleModel: RXSObject {
     let serviceLayer = ServiceLayer()
+    let cities = ["STL", "St. Louis", "San Fran", "Chicago"]
     
     let localEvents = Variable<[Event]>([])
+    let autocompleteFields = Variable<[String]>([])
     
     init() {
         rxs.disposeBag
@@ -21,5 +23,9 @@ class SocialBubbleModel: RXSObject {
         let currentDate = Date()
         let sortedEvents = events.sorted { $0.startTime < $1.startTime }
         localEvents.value = sortedEvents.filter { currentDate < $0.startTime }
+    }
+    
+    func fetchLocationSuggestions(_ term: String) {
+        autocompleteFields.value = cities.filter { $0.contains(term) }
     }
 }

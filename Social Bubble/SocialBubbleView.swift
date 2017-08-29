@@ -10,6 +10,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private let login = LoginButton(readPermissions: [.publicProfile])
     private let textField = PlaceholderPaddedTextField()
     private let search = UIButton()
+    private let tableView = TableHandler()
     private let screenSaver = SKView()
     private let blurView = UIVisualEffectView()
     private var animation: Animation?
@@ -17,19 +18,26 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private var bubbles: [BubbleView] = []
     private var visibleBubbles: [BubbleView] = []
     private var loggedIn: Bool { return AccessToken.current != nil }
-    
+
+    let textFieldTerm: Observable<String>
+    let autocompleteFields: AnyObserver<[String]>
+    private let _autocompleteFields = Variable<[String]>([])
+    let autocompleteSelection: Observable<String>
+    let searchTerm: Observable<String>
     let selectDirection = PublishSubject<Event>()
     let expandedBubble: AnyObserver<Bool>
     private let _expandedBubble = Variable<Bool>(false)
-    let searchTerm: Observable<String>
 
     override init(frame: CGRect) {
         expandedBubble = _expandedBubble.asObserver()
+        textFieldTerm = textField.searchTerm
+        autocompleteFields = _autocompleteFields.asObserver()
+        autocompleteSelection = tableView.selection
         let searchSelection = search.rxs.tap
-        let term = textField.rxs.text
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .map { $0.replacingOccurrences(of: " ", with: "") }
-            .filter { $0.characters.count > 0 }
+        let term = Observable.of(
+            textField.rxs.text.map { $0.formatText() }.filter { $0.characters.count > 0 },
+            tableView.selection.map { $0.formatText() }
+        ).merge()
         searchTerm = searchSelection.withLatestFrom(term)
         super.init(frame: frame)
         backgroundColor = .black
@@ -48,6 +56,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addSubview(login)
         textField.placeholder = "Location"
         addSubview(textField)
+        addSubview(tableView.view)
         search.setTitle("Search", for: .normal)
         search.setTitleColor(.white, for: .normal)
         search.backgroundColor = UIColor(hue:0.62, saturation:0.57, brightness:0.68, alpha:1.00)
@@ -57,6 +66,11 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         rxs.disposeBag
             ++ { [weak self] in self?.showAlert() } <~ searchSelection.filter { !self.loggedIn }
             ++ { [weak self] in self?.showBubbles() } <~ searchTerm.toVoid().filter { self.loggedIn }
+            ++ { [weak self] in self?.tableView.view.isHidden = false } <~ textField.editingStarted
+            ++ tableView.data <~ _autocompleteFields.asObservable()
+            ++ rxs.setNeedsLayout <~ _autocompleteFields.asObservable().toVoid()
+            ++ textField.rxs.text <~ autocompleteSelection
+            ++ { [weak self] in self?.tableView.view.isHidden = true } <~ search.rxs.tap
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -74,9 +88,11 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         let loginTextSize = CGSize(width: titleSize.width/2 - Padding.small, height: 44)
         login.frame = CGRect(x: title.frame.minX, y: title.frame.maxY, size: loginTextSize)
         textField.frame = CGRect(x: login.frame.maxX + Padding.small, y: login.frame.minY, width: loginTextSize.width - searchSize.width, height: loginTextSize.height)
-        addRadius(toCorner: [.topLeft, .bottomLeft], ofView: textField)
+        let tableViewSize = CGSize(width: loginTextSize.width, height: textField.frame.height * CGFloat(_autocompleteFields.value.count))
+        tableView.view.frame = CGRect(x: textField.frame.minX, y: textField.frame.maxY, size: tableViewSize)
+        addRadius(toCorner: [.topLeft], ofView: textField)
         search.frame = CGRect(x: textField.frame.maxX, y: textField.frame.minY, size: searchSize)
-        addRadius(toCorner: [.topRight, .bottomRight], ofView: search)
+        addRadius(toCorner: [.topRight], ofView: search)
         let height = bounds.height - search.frame.maxY
         screenSaver.frame = CGRect(x: bounds.minX - (bounds.height - bounds.width)/2, y: search.frame.maxY, width: height, height: height)
     }
@@ -86,15 +102,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         layoutBubbles()
         blurView.effect = nil
     }
-    
-    private func addRadius(toCorner corner: UIRectCorner, ofView view: UIView) {
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.bounds = view.frame
-        shapeLayer.position = view.center
-        shapeLayer.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [corner], cornerRadii: CGSize(width: 3, height: 3)).cgPath
-        view.layer.mask = shapeLayer
-    }
-    
+
     private func showAlert() {
         let alert = UIAlertController(title: "Login Required", message: "Please login to your Facebook account", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
@@ -126,12 +134,14 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         login.isHidden = true
         search.isHidden = true
         textField.isHidden = true
+        tableView.view.isHidden = true
         receiveTaps()
     }
     
     private func receiveTaps() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissBubble(_:)))
         tap.delegate = self
+        tap.cancelsTouchesInView = false
         addGestureRecognizer(tap)
     }
 
@@ -150,8 +160,9 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
     
     private func layoutBubbles() {
-        bubbles.forEach { layoutRandomBubble(bubble: $0) }
         visibleBubbles = []
+        bubbles.forEach { layoutRandomBubble(bubble: $0) }
+//        visibleBubbles = []
     }
     
     private func layoutRandomBubble(bubble: BubbleView) {

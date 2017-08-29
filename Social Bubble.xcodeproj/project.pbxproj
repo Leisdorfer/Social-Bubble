@@ -14,6 +14,7 @@
 		171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FF2241F43869200926487 /* SocialBubbleModel.swift */; };
 		172B72FE1F546A83001B57AC /* BubbleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172B72FD1F546A83001B57AC /* BubbleScene.swift */; };
 		172B73001F546ADB001B57AC /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172B72FF1F546ADB001B57AC /* Divider.swift */; };
+		172B73021F54AA66001B57AC /* TableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172B73011F54AA66001B57AC /* TableHandler.swift */; };
 		173D4B9D1F435A770011F743 /* FBSDKLoginKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 175796721F434535000CAE6B /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		173D4BA01F435A7B0011F743 /* FBSDKCoreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 175796711F434529000CAE6B /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		173D4BA41F435A810011F743 /* FacebookLogin.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1705712A1F4344CE0000324A /* FacebookLogin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -79,6 +80,7 @@
 		171FF2241F43869200926487 /* SocialBubbleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialBubbleModel.swift; sourceTree = "<group>"; };
 		172B72FD1F546A83001B57AC /* BubbleScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleScene.swift; sourceTree = "<group>"; };
 		172B72FF1F546ADB001B57AC /* Divider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
+		172B73011F54AA66001B57AC /* TableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableHandler.swift; sourceTree = "<group>"; };
 		173D4BA91F4363970011F743 /* FacebookShare.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookShare.framework; path = Carthage/Build/iOS/FacebookShare.framework; sourceTree = "<group>"; };
 		175796701F43451A000CAE6B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Carthage/Build/iOS/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		175796711F434529000CAE6B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Carthage/Build/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				17ECDAA01F41DB1500580940 /* AppDelegate.swift */,
 				17ECDAA21F41DB1500580940 /* ViewController.swift */,
 				17ECDACE1F41DD2200580940 /* SocialBubbleView.swift */,
+				172B73011F54AA66001B57AC /* TableHandler.swift */,
 				17ECDAD51F41E1E300580940 /* HelperMethods.swift */,
 				177722101F42300F000164A4 /* ServiceLayer.swift */,
 				171FF2241F43869200926487 /* SocialBubbleModel.swift */,
@@ -328,6 +331,7 @@
 				167F50E11F45295E0032EFF2 /* BubbleView.swift in Sources */,
 				167F50E31F4DFB2F0032EFF2 /* PaddedTextField.swift in Sources */,
 				172B72FE1F546A83001B57AC /* BubbleScene.swift in Sources */,
+				172B73021F54AA66001B57AC /* TableHandler.swift in Sources */,
 				171FF2251F43869200926487 /* SocialBubbleModel.swift in Sources */,
 				17D2CFA21F461A5A00FFC7D8 /* Animation.swift in Sources */,
 				177722111F42300F000164A4 /* ServiceLayer.swift in Sources */,

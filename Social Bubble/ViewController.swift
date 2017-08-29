@@ -5,6 +5,8 @@ import RxSwift
 struct Binding {
     static func bind(view: SocialBubbleView, model: SocialBubbleModel, controller: ViewController) {
         view.rxs.disposeBag
+            ++ { model.fetchLocationSuggestions($0) } <~ view.textFieldTerm
+            ++ view.autocompleteFields <~ model.autocompleteFields
             ++ { model.fetchEvents($0) } <~ view.searchTerm
             ++ { view.addEvents($0) } <~ model.localEvents
             ++ { controller.displayDirections($0) } <~ view.selectDirection.asObservable()

@@ -27,7 +27,7 @@ class BubbleView: UIButton {
         layer.masksToBounds = true
         isUserInteractionEnabled = false
         backgroundColor = UIColor(hue: CGFloat(arc4random_uniform(100))/100.0, saturation: 1.0, brightness: 0.75, alpha: 1.0)
-        addShadow(withRadius: 10)
+        addShadow(withRadius: 15)
         styleLabels(labels: [name, time])
         name.font = UIFont(name: "HelveticaNeue", size: 20)
         addSubview(name)
@@ -142,5 +142,6 @@ class BubbleView: UIButton {
         layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowOpacity = 0.75
         layer.shadowRadius = radius
+        layer.masksToBounds = false
     }
 }
