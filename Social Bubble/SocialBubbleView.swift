@@ -38,7 +38,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             textField.rxs.text.map { $0.formatText() }.filter { $0.characters.count > 0 },
             tableView.selection.map { $0.formatText() }
         ).merge()
-        searchTerm = searchSelection.withLatestFrom(term)
+        searchTerm = searchSelection.withLatestFrom(term).distinctUntilChanged()
         super.init(frame: frame)
         backgroundColor = .black
         addBubbles()
@@ -67,10 +67,10 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
             ++ { [weak self] in self?.showAlert() } <~ searchSelection.filter { !self.loggedIn }
             ++ { [weak self] in self?.showBubbles() } <~ searchTerm.toVoid().filter { self.loggedIn }
             ++ { [weak self] in self?.tableView.view.isHidden = false } <~ textField.editingStarted
+            ++ { [weak self] in self?.tableView.view.isHidden = true } <~ Observable.of(search.rxs.tap, textFieldTerm.filter { $0.isEmpty }.toVoid()).merge()
             ++ tableView.data <~ _autocompleteFields.asObservable()
             ++ rxs.setNeedsLayout <~ _autocompleteFields.asObservable().toVoid()
             ++ textField.rxs.text <~ autocompleteSelection
-            ++ { [weak self] in self?.tableView.view.isHidden = true } <~ search.rxs.tap
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -111,7 +111,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     }
 
     private func addBubbles() {
-        (0...10).forEach { _ in
+        (0...8).forEach { _ in
             let bubble = BubbleView()
             addSubview(bubble)
             bubbles.append(bubble)
@@ -162,7 +162,6 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
     private func layoutBubbles() {
         visibleBubbles = []
         bubbles.forEach { layoutRandomBubble(bubble: $0) }
-//        visibleBubbles = []
     }
     
     private func layoutRandomBubble(bubble: BubbleView) {

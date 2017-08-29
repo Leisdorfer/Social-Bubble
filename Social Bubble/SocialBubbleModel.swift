@@ -1,12 +1,10 @@
 import Foundation
-import FacebookCore
+import GooglePlaces
 import RxSugar
 import RxSwift
 
 class SocialBubbleModel: RXSObject {
     let serviceLayer = ServiceLayer()
-    let cities = ["STL", "St. Louis", "San Fran", "Chicago"]
-    
     let localEvents = Variable<[Event]>([])
     let autocompleteFields = Variable<[String]>([])
     
@@ -26,6 +24,14 @@ class SocialBubbleModel: RXSObject {
     }
     
     func fetchLocationSuggestions(_ term: String) {
-        autocompleteFields.value = cities.filter { $0.contains(term) }
+        let filter = GMSAutocompleteFilter()
+        filter.type = .city
+        let client = GMSPlacesClient()
+        client.autocompleteQuery(term, bounds: nil, filter: filter, callback: { [weak self] result, error in
+            guard let `self` = self, let _result = result else { return }
+            let cities = _result.map { $0.attributedPrimaryText.string }
+            let uniqueCities = Set(cities)
+            self.autocompleteFields.value = uniqueCities.filter { $0.contains(term) }
+        })
     }
 }

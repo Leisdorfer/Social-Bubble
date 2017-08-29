@@ -24,6 +24,23 @@
 		177722111F42300F000164A4 /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177722101F42300F000164A4 /* ServiceLayer.swift */; };
 		1777221D1F433442000164A4 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1777221C1F433442000164A4 /* Cartfile */; };
 		179093571F43646100F6161F /* Bolts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 179093541F43645500F6161F /* Bolts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		17A21FD91F55D3ED0000F2DE /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FD81F55D3ED0000F2DE /* GooglePlaces.framework */; };
+		17A21FDB1F55D4330000F2DE /* GoogleMapsBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FDA1F55D4330000F2DE /* GoogleMapsBase.framework */; };
+		17A21FDD1F55D4C90000F2DE /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 17A21FDC1F55D4C90000F2DE /* GooglePlaces.bundle */; };
+		17A21FDF1F55D5C70000F2DE /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FDE1F55D5C70000F2DE /* Accelerate.framework */; };
+		17A21FE11F55D5D20000F2DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FE01F55D5D20000F2DE /* CoreData.framework */; };
+		17A21FE31F55D5DF0000F2DE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FE21F55D5DF0000F2DE /* CoreGraphics.framework */; };
+		17A21FE51F55D5E60000F2DE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FE41F55D5E60000F2DE /* CoreLocation.framework */; };
+		17A21FE71F55D5FB0000F2DE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FE61F55D5FB0000F2DE /* CoreTelephony.framework */; };
+		17A21FE91F55D6020000F2DE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FE81F55D6020000F2DE /* CoreText.framework */; };
+		17A21FEB1F55D60F0000F2DE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FEA1F55D60F0000F2DE /* GLKit.framework */; };
+		17A21FED1F55D6190000F2DE /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FEC1F55D6190000F2DE /* ImageIO.framework */; };
+		17A21FEF1F55D62A0000F2DE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FEE1F55D62A0000F2DE /* libc++.tbd */; };
+		17A21FF11F55D6380000F2DE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FF01F55D6380000F2DE /* libz.tbd */; };
+		17A21FF31F55D6430000F2DE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FF21F55D6430000F2DE /* OpenGLES.framework */; };
+		17A21FF51F55D64C0000F2DE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FF41F55D64C0000F2DE /* QuartzCore.framework */; };
+		17A21FF71F55D6560000F2DE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FF61F55D6560000F2DE /* SystemConfiguration.framework */; };
+		17A21FF91F55D65E0000F2DE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A21FF81F55D65E0000F2DE /* UIKit.framework */; };
 		17D2CFA21F461A5A00FFC7D8 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D2CFA11F461A5A00FFC7D8 /* Animation.swift */; };
 		17ECDAA11F41DB1500580940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAA01F41DB1500580940 /* AppDelegate.swift */; };
 		17ECDAA31F41DB1500580940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ECDAA21F41DB1500580940 /* ViewController.swift */; };
@@ -90,6 +107,23 @@
 		179093541F43645500F6161F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Carthage/Build/iOS/Bolts.framework; sourceTree = "<group>"; };
 		179093581F43830E00F6161F /* RxSugar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSugar.framework; path = Carthage/Build/iOS/RxSugar.framework; sourceTree = "<group>"; };
 		1790935A1F43831900F6161F /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		17A21FD81F55D3ED0000F2DE /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlaces.framework; sourceTree = "<group>"; };
+		17A21FDA1F55D4330000F2DE /* GoogleMapsBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsBase.framework; sourceTree = "<group>"; };
+		17A21FDC1F55D4C90000F2DE /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = GooglePlaces.framework/Resources/GooglePlaces.bundle; sourceTree = "<group>"; };
+		17A21FDE1F55D5C70000F2DE /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		17A21FE01F55D5D20000F2DE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		17A21FE21F55D5DF0000F2DE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		17A21FE41F55D5E60000F2DE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		17A21FE61F55D5FB0000F2DE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		17A21FE81F55D6020000F2DE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		17A21FEA1F55D60F0000F2DE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		17A21FEC1F55D6190000F2DE /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		17A21FEE1F55D62A0000F2DE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		17A21FF01F55D6380000F2DE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		17A21FF21F55D6430000F2DE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		17A21FF41F55D64C0000F2DE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		17A21FF61F55D6560000F2DE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		17A21FF81F55D65E0000F2DE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		17D2CFA11F461A5A00FFC7D8 /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		17ECDA9D1F41DB1500580940 /* Social Bubble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Bubble.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17ECDAA01F41DB1500580940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +143,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17A21FF91F55D65E0000F2DE /* UIKit.framework in Frameworks */,
+				17A21FF71F55D6560000F2DE /* SystemConfiguration.framework in Frameworks */,
+				17A21FF51F55D64C0000F2DE /* QuartzCore.framework in Frameworks */,
+				17A21FF31F55D6430000F2DE /* OpenGLES.framework in Frameworks */,
+				17A21FF11F55D6380000F2DE /* libz.tbd in Frameworks */,
+				17A21FEF1F55D62A0000F2DE /* libc++.tbd in Frameworks */,
+				17A21FED1F55D6190000F2DE /* ImageIO.framework in Frameworks */,
+				17A21FEB1F55D60F0000F2DE /* GLKit.framework in Frameworks */,
+				17A21FE91F55D6020000F2DE /* CoreText.framework in Frameworks */,
+				17A21FE71F55D5FB0000F2DE /* CoreTelephony.framework in Frameworks */,
+				17A21FE51F55D5E60000F2DE /* CoreLocation.framework in Frameworks */,
+				17A21FE31F55D5DF0000F2DE /* CoreGraphics.framework in Frameworks */,
+				17A21FE11F55D5D20000F2DE /* CoreData.framework in Frameworks */,
+				17A21FDF1F55D5C70000F2DE /* Accelerate.framework in Frameworks */,
+				17A21FD91F55D3ED0000F2DE /* GooglePlaces.framework in Frameworks */,
+				17A21FDB1F55D4330000F2DE /* GoogleMapsBase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +182,23 @@
 		177722171F43304B000164A4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17A21FF81F55D65E0000F2DE /* UIKit.framework */,
+				17A21FF61F55D6560000F2DE /* SystemConfiguration.framework */,
+				17A21FF41F55D64C0000F2DE /* QuartzCore.framework */,
+				17A21FF21F55D6430000F2DE /* OpenGLES.framework */,
+				17A21FF01F55D6380000F2DE /* libz.tbd */,
+				17A21FEE1F55D62A0000F2DE /* libc++.tbd */,
+				17A21FEC1F55D6190000F2DE /* ImageIO.framework */,
+				17A21FEA1F55D60F0000F2DE /* GLKit.framework */,
+				17A21FE81F55D6020000F2DE /* CoreText.framework */,
+				17A21FE61F55D5FB0000F2DE /* CoreTelephony.framework */,
+				17A21FE41F55D5E60000F2DE /* CoreLocation.framework */,
+				17A21FE21F55D5DF0000F2DE /* CoreGraphics.framework */,
+				17A21FE01F55D5D20000F2DE /* CoreData.framework */,
+				17A21FDE1F55D5C70000F2DE /* Accelerate.framework */,
 				1777221C1F433442000164A4 /* Cartfile */,
+				17A21FDC1F55D4C90000F2DE /* GooglePlaces.bundle */,
+				17A21FDA1F55D4330000F2DE /* GoogleMapsBase.framework */,
 				1790935A1F43831900F6161F /* RxSwift.framework */,
 				179093581F43830E00F6161F /* RxSugar.framework */,
 				179093541F43645500F6161F /* Bolts.framework */,
@@ -142,6 +208,7 @@
 				175796701F43451A000CAE6B /* FBSDKShareKit.framework */,
 				1705712A1F4344CE0000324A /* FacebookLogin.framework */,
 				170571291F4344C00000324A /* FacebookCore.framework */,
+				17A21FD81F55D3ED0000F2DE /* GooglePlaces.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -303,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1777221D1F433442000164A4 /* Cartfile in Resources */,
+				17A21FDD1F55D4C90000F2DE /* GooglePlaces.bundle in Resources */,
 				17ECDAA81F41DB1500580940 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,6 +495,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -480,6 +549,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
@@ -494,6 +564,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -512,6 +583,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = "Social Bubble/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
