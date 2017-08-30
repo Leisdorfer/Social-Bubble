@@ -54,6 +54,8 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         addSubview(title)
         login.delegate = self
         addSubview(login)
+        textField.layer.borderColor = UIColor(hue:0.62, saturation:0.57, brightness:0.68, alpha:1.00).cgColor
+        textField.layer.borderWidth = 3
         textField.placeholder = "Location"
         addSubview(textField)
         addSubview(tableView.view)
@@ -88,7 +90,7 @@ class SocialBubbleView: UIView, LoginButtonDelegate, UIGestureRecognizerDelegate
         let loginTextSize = CGSize(width: titleSize.width/2 - Padding.small, height: 44)
         login.frame = CGRect(x: title.frame.minX, y: title.frame.maxY, size: loginTextSize)
         textField.frame = CGRect(x: login.frame.maxX + Padding.small, y: login.frame.minY, width: loginTextSize.width - searchSize.width, height: loginTextSize.height)
-        let tableViewSize = CGSize(width: loginTextSize.width, height: textField.frame.height * CGFloat(_autocompleteFields.value.count))
+        let tableViewSize = CGSize(width: bounds.width/2/*loginTextSize.width*/, height: textField.frame.height * CGFloat(_autocompleteFields.value.count))
         tableView.view.frame = CGRect(x: textField.frame.minX, y: textField.frame.maxY, size: tableViewSize)
         addRadius(toCorner: [.topLeft], ofView: textField)
         search.frame = CGRect(x: textField.frame.maxX, y: textField.frame.minY, size: searchSize)

@@ -4,7 +4,6 @@ import RxSwift
 
 class TableHandler: NSObject, UITableViewDelegate, UITableViewDataSource {
     let view = UITableView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), style: .plain)
-    private static let reuseIdentifier = "Cell"
     
     private let disposeBag = DisposeBag()
     let data: AnyObserver<[String]>
@@ -18,13 +17,13 @@ class TableHandler: NSObject, UITableViewDelegate, UITableViewDataSource {
         super.init()
         view.dataSource = self
         view.delegate = self
-        view.register(UITableViewCell.self, forCellReuseIdentifier: TableHandler.reuseIdentifier)
+        view.register(GooglePlaceCell.self, forCellReuseIdentifier: GooglePlaceCell.reuseIdentifier)
         view.layer.borderColor = UIColor(hue:0.62, saturation:0.57, brightness:0.68, alpha:1.00).cgColor
         view.layer.borderWidth = 3
         rxs.disposeBag
             ++ view.rxs.reloadData <~ _data.asObservable().toVoid()
     }
-    
+ 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -38,19 +37,48 @@ class TableHandler: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableHandler.reuseIdentifier) else { return UITableViewCell() }
-        cell.textLabel?.text = _data.value[indexPath.row]
-        styleCell(cell)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: GooglePlaceCell.reuseIdentifier) as? GooglePlaceCell else { return GooglePlaceCell() }
+        if indexPath.row < _data.value.count - 1 {
+            cell.place.text = _data.value[indexPath.row]
+        } else {
+            cell.attribution.image = UIImage(named: "powered_by_google_on_white")
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         _selection.onNext(_data.value[indexPath.row])
     }
+}
+
+class GooglePlaceCell: UITableViewCell {
+    static let reuseIdentifier = "Cell"
+    let place = UILabel()
+    let attribution = UIImageView()
     
-    private func styleCell(_ cell: UITableViewCell) {
-        cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 13)
-        cell.backgroundColor = UIColor(hue:0.00, saturation:0.00, brightness:0.97, alpha:1.00)
-        addRadius(toCorner: [.bottomLeft, .bottomRight], ofView: view)
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = UIColor(hue:0.00, saturation:0.00, brightness:0.97, alpha:1.00)
+        place.font = UIFont(name: "HelveticaNeue", size: 13)
+        contentView.addSubview(place)
+        contentView.addSubview(attribution)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let placeSize = place.sizeThatFits(bounds.size)
+        place.frame = CGRect(x: bounds.minX + Padding.large, y: bounds.midY - placeSize.height/2, size: placeSize)
+        let imageSize = attribution.sizeThatFits(bounds.size)
+        attribution.frame = CGRect(x: bounds.midX - imageSize.width/2, y: bounds.midY - imageSize.height/2, size: imageSize)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        place.text = ""
+        attribution.image = nil
     }
 }
